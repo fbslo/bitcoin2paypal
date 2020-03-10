@@ -1,10 +1,10 @@
 var mysql = require("mysql");
 
-var database_ip = 'remotemysql.com'
-var database_user = 'u7OCP8lXnq'
-var database_password = 'WeNOV5xu24'
+var database_ip = 'database.com'
+var database_user = 'user_name'
+var database_password = 'user_password'
 var database_port = 3306
-var database = 'u7OCP8lXnq'
+var database = 'exchange'
 
 //create connection to MySQL database
 var con = mysql.createConnection({
