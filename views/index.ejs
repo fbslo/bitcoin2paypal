@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>BTC2PP - Bitcoin to PayPal exchange!</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="Bitcoin to PayPal exchange!">
+	<meta name="keywords" content="bitcoin, paypal, exchange, money, cryptocurrency, crypto">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Favicon -->
+	<link href="img/favicon.ico" rel="shortcut icon"/>
+
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="css/themify-icons.css"/>
+	<link rel="stylesheet" href="css/animate.css"/>
+	<link rel="stylesheet" href="css/owl.carousel.css"/>
+	<link rel="stylesheet" href="css/style.css"/>
+
+	<link rel='stylesheet' type='text/css' href='/fontawesome-free-5.12.1-web/css/fontawesome.min.css'>
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<script src="js/jquery-3.2.1.min.js"></script>
+
+	<!--[if lt IE 9]>
+	  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+<body>
+	<!-- Page Preloder -->
+	<div id="preloder">
+		<div class="loader"></div>
+	</div>
+
+	<!-- Header section -->
+	<header class="header-section clearfix">
+		<div class="container-fluid">
+			<a href="/" class="site-logo">
+				<img src="img/logo.png" alt="Logo" width="150" height="100">
+			</a>
+			<div class="responsive-bar"><i class="fa fa-bars"></i></div>
+			<a href="#exchange" class="site-btn">Exchange</a>
+			<nav class="main-menu">
+				<ul class="menu-list">
+					<li><a href="#features">Features</a></li>
+					<li><a href="/exchange/search">Transaction Status</a></li>
+					<li><a href="#reviews">Reviews</a></li>
+					<li><a href="/contact">Contact</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+	<!-- Header section end -->
+
+
+	<!-- Hero section -->
+	<section class="hero-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 hero-text">
+					<h2>Sell <span>Bitcoin</span> <br>Get <span>PayPay</span></h2>
+					<h4>Exchange your Bitcoins for PayPal.</h4>
+					<form class="hero-subscribe-from">
+						<a href='#exchange' class="site-btn sb-gradients">Exchange</a>
+					</form>
+				</div>
+				<div class="col-md-6">
+					<img src="img/laptop.png" class="laptop-image" alt="">
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Hero section end -->
+
+
+	<!-- Exchange section -->
+	<section class="newsletter-section gradient-bg" id="exchange">
+		<div class="container text-white">
+			<div class="row">
+				<div class="col-lg-7 about-text">
+					<h2>Exchange Bitcoin for PayPal</h2>
+					<p>Enter your PayPal email and amount in BTC.<span id='usd_to_receive'></span><br> Current exchange rate is <span id='usd_rate_percent'></span> higher than average exchange rate.</p>
+				</div>
+				<div class="col-lg-5 col-md-8 offset-lg-0 offset-md-2">
+					<form class="newsletter-form" action='/create' method='POST'>
+						<input type="email" required placeholder="Enter your email" id='email' name='email'><p><br>
+						<input type="number" required placeholder="Enter amount in BTC (e.g. 1.018)" id='amount' name='amount' step="0.00000001">
+						<input type='hidden' id='ref' name='ref' value='<%= ref %>' >
+						<input type='hidden' id='receive' name='receive' value=''>
+						<button name='button'>Exchange</button>
+					</form>
+				</div>
+				<!-- feature -->
+				<div class="col-md-6 col-lg-4 feature">
+					<div class="feature-content">
+						<h4>Average exchange rate:<br></h4><h3><span id='usd_average'>Loading...</span></h3>
+					</div>
+				</div>
+				<!-- feature -->
+				<div class="col-md-6 col-lg-4 feature">
+					<div class="feature-content">
+						<h4>Our exchange rate:<br></h4><h3><span id='usd_rate'>Loading...</span></h3>
+					</div>
+				</div>
+				<!-- feature -->
+				<div class="col-md-6 col-lg-4 feature">
+					<div class="feature-content">
+						<h4>Your Profit:<br></h4><h3><span id='exchange_usd'><sup>enter amount</sup></span></h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Exchange section end -->
+
+	<script>
+
+	$.ajax({
+		url: 'https://blockchain.info/ticker',
+		contentType: "application/json",
+		dataType: 'json',
+		success: function(result){
+				var usd_average_raw = result.USD.last
+				var usd_average = usd_average_raw.toLocaleString(undefined, {maximumFractionDigits:2})
+				var profit_rate = <%= rate %> //get from server
+				var usd_rate = (usd_average_raw*profit_rate).toLocaleString(undefined, {maximumFractionDigits:2})
+				$('#usd_average').html('$ '+usd_average);
+				$('#usd_rate').html('$ '+usd_rate);
+
+				$('#usd_rate_percent').html(((profit_rate - 1)*100).toFixed(2) + '%');
+
+				$('input').keyup(function(){ // run anytime the value changes
+					var amount_to_sell  = Number($('#amount').val());   // get value of field
+					var profit_for_customer = ((usd_average_raw*profit_rate) - usd_average_raw) * amount_to_sell
+					var sell_amount = (usd_average_raw*profit_rate) * amount_to_sell
+					$('#exchange_usd').html('$ '+profit_for_customer.toLocaleString(undefined, {maximumFractionDigits:2}));
+					$('#usd_to_receive').html(' You receive $ '+ sell_amount.toLocaleString(undefined, {maximumFractionDigits:2}))
+					$("#receive").val(sell_amount);
+				});
+		}
+	});
+	</script>
+
+	<!-- About section -->
+	<section class="about-section spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 offset-lg-6 about-text">
+					<h2>What is btc2pp.net</h2>
+					<h5>An innovative Bitcoin to PayPal exchange.</h5>
+					<p>We already have 50+ transactions! 100% positive feedback and it's just a beginning.<br>No ID required + we cover PayPal fees!</p>
+					<a href="#exchange" class="site-btn sb-gradients sbg-line mt-5">Exchange</a>
+				</div>
+			</div>
+			<div class="about-img">
+				<img src="img/about-img.png" alt="">
+			</div>
+		</div>
+	</section>
+	<!-- About section end -->
+
+
+
+	<!-- Features section -->
+	<section class="features-section spad gradient-bg" id="features">
+		<div class="container text-white">
+			<div class="section-title text-center">
+				<h2>Our Features</h2>
+				<p>BTC2PP.net is the simplest way to exchange Bitcoin to PayPal at great exchnage rate.</p>
+			</div>
+			<div class="row">
+				<!-- feature -->
+				<div class="col-md-6 col-lg-4 feature">
+					<i class="ti-reload"></i>
+					<div class="feature-content">
+						<h4>Fast Exchange</h4>
+						<p>All exchanges will be completed within 12 hours after 6 bitcoin confirmations. Usually it takes less than 1 hour.</p>
+						<!--<a href="" class="readmore">Readmore</a>-->
+					</div>
+				</div>
+				<!-- feature -->
+				<div class="col-md-6 col-lg-4 feature">
+					<i class="ti-shield"></i>
+					<div class="feature-content">
+						<h4>Safe & Secure</h4>
+						<p>All your data is encrypted and it's stored for only 30 days after transaction. <br>We do not share any informations with other companies.</p>
+					</div>
+				</div>
+				<!-- feature -->
+				<div class="col-md-6 col-lg-4 feature">
+					<i class="ti-wallet"></i>
+					<div class="feature-content">
+						<h4>PayPal</h4>
+						<p>Our PayPal accounts are US & Verified.<br>No chargebacks & refunds. </p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Features section end -->
+
+
+	<!-- Process section -->
+	<section class="process-section spad" id="process">
+		<div class="container">
+			<div class="section-title text-center">
+				<h2>Easy & Secure Exchange</h2>
+				<p>Sell your Bitcoin for PayPal. It’s easy and takes only a few minutes! </p>
+			</div>
+			<div class="row">
+				<div class="col-md-4 process">
+					<div class="process-step">
+						<figure class="process-icon">
+							<img src="img/process-icons/1.png" alt="#">
+						</figure>
+						<h4>Create New Transaction</h4>
+						<p>Fill out the <a href='#exchange'>form</a>, deposit Bitcoins and wait for PayPal funds. Transaction will be completed in less than 12 hours.</p>
+					</div>
+				</div>
+				<div class="col-md-4 process">
+					<div class="process-step">
+						<figure class="process-icon">
+							<img src="img/process-icons/2.png" alt="#">
+						</figure>
+						<h4>Pay with PayPal</h4>
+						<p>Pay for goods and services using PayPal balance or withdraw money to your bank account.</p>
+					</div>
+				</div>
+				<div class="col-md-4 process">
+					<div class="process-step">
+						<figure class="process-icon">
+							<img src="img/process-icons/3.png" alt="#">
+						</figure>
+						<h4>Buy more Bitcoins</h4>
+						<p>Buy and sell more Bitcoins. <br> Enjoy our Premium Rate every time. Profit!</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Process section end -->
+
+
+
+	<!-- Review section -->
+	<section class="review-section spad" id="reviews">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 push-8">
+					<img src="img/quote.png" alt="" class="quote mb-5">
+					<div class="review-text-slider owl-carousel">
+						<div class="review-text">
+							<p>"I sold 0.204 BTC and I got my money to Paypal after 6 hours. They also covered Paypal transaction fees. Also best rate in the market.”</p>
+						</div>
+						<div class="review-text">
+							<p>"Quick and easy exchange!!! Absolutely reliable! Respect to your team.”</p>
+						</div>
+						<div class="review-text">
+							<p>"I would recommend you to add more coins. I want to make more transactions, couz you guys have one of the highest rate and have not PayPal fees.”</p>
+						</div>
+						<div class="review-text">
+							<p>"Easy to conduct a transaction i dont need register. No proof ID. They also covered Paypal transaction fee. One thing i &nbsp;would recommend that they add other coins too.”</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 pr-0 pull-3">
+					<div class="review-meta-slider owl-carousel pt-5">
+						<div class="author-meta">
+						<!--	<div class="author-avatar set-bg" data-setbg="img/review/1.jpg"></div> -->
+							<div class="author-name">
+								<h4>Lau5</h4>
+								<p>Customer</p>
+							</div>
+						</div>
+						<div class="author-meta">
+							<div class="author-name">
+								<h4>Matt Cuta</h4>
+								<p>Customer</p>
+							</div>
+						</div>
+						<div class="author-meta">
+							<div class="author-name">
+								<h4>MakMak12</h4>
+								<p>Customer</p>
+							</div>
+						</div>
+						<div class="author-meta">
+							<div class="author-name">
+								<h4>Milek M.</h4>
+								<p>Customer</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Review section end -->
+
+
+
+
+	<!-- Blog section -->
+	<section class="blog-section spad">
+		<div class="container">
+			<div class="section-title text-center">
+				<h2>Latest Posts</h2>
+			</div>
+			<div class="row">
+				<!-- blog item -->
+				<div class="col-md-4">
+					<div class="blog-item">
+						<figure class="blog-thumb">
+							<img src="img/blog/btc.jpg" alt="">
+						</figure>
+						<div class="blog-text">
+							<div class="post-date">1 mar 2020</div>
+							<h4 class="blog-title"><a href="/blog/how-to-buy-bitcoin">How to Buy Bitcoin Anonymously (Online and Offline)</a></h4>
+							<div class="post-meta">
+								<a href=""><span>by</span> Admin</a>
+								<a href=""><i class="fa fa-eye"></i> <%= views_btc %> Views</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- blog item -->
+				<div class="col-md-4">
+					<div class="blog-item">
+						<figure class="blog-thumb">
+							<img src="img/blog/paypal.jpg" alt="">
+						</figure>
+						<div class="blog-text">
+							<div class="post-date">23 feb 2020</div>
+							<h4 class="blog-title"><a href="/blog/paypal-credit">How to use PayPal's line of credit to pay off online purchases</a></h4>
+							<div class="post-meta">
+								<a href=""><span>by</span> Admin</a>
+								<a href=""><i class="fa fa-eye"></i> <%= views %> Views</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- blog item -->
+				<div class="col-md-4">
+					<div class="blog-item">
+						<figure class="blog-thumb">
+							<img src="img/blog/yemen.jpg" alt="">
+						</figure>
+						<div class="blog-text">
+							<div class="post-date">20 feb 2020</div>
+							<h4 class="blog-title"><a href="blog/yemen-civil-war-crypto">Yemen’s Civil War Shows the Dangers of Crypto</a></h4>
+							<div class="post-meta">
+								<a href=""><span>by</span> Admin</a>
+								<a href=""><i class="fa fa-eye"></i> <%= views_yemen %> Views</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Blog section end -->
+
+	<!-- Footer section -->
+		<footer class="footer-section">
+			<div class="container">
+				<div class="row spad">
+					<div class="col-md-6 col-lg-3 footer-widget">
+						<img src="img/logo.png" class="mb-4" alt="Logo" width="150" height="100">
+						<p>
+						<span>
+	          Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved <br> BTC2PP.NET
+	          </span>
+					</div>
+					<div class="col-md-6 col-lg-2 offset-lg-1 footer-widget">
+						<h5 class="widget-title">Resources</h5>
+						<ul>
+							<li><a href="/blog/how-to-buy-bitcoin">How to Buy Bitcoin</a></li>
+							<li><a href="/legal/terms-and-conditions">Terms and Conditions</a></li>
+							<li><a href="/legal/privacy-policy">Privacy Policy </a></li>
+							<li><a href="/exchange/search">Track your Transaction</a></li>
+						</ul>
+					</div>
+					<div class="col-md-6 col-lg-2 offset-lg-1 footer-widget">
+						<h5 class="widget-title">Bitcoin Links</h5>
+						<ul>
+							<li><a href="https://btc.com/stats">Network Stats</a></li>
+							<li><a href="https://btc.com/">Block Explorer</a></li>
+							<li><a href="https://coinmarketcap.com/currencies/bitcoin/">CoinMarketCap</a></li>
+							<li><a href="https://bitcoin.org/bitcoin.pdf">Whitepaper</a></li>
+						</ul>
+					</div>
+					<div class="col-md-6 col-lg-2 offset-lg-1 footer-widget">
+						<h5 class="widget-title">Contact Us</h5>
+							<ul>
+								<li><a href="/contact">Contact Us</a></li>
+								<li><a href="/contact">Send Feedback</a></li>
+							</ul>
+					</div>
+				</div>
+			</div>
+		</footer>
+
+	<!--====== Javascripts & Jquery ======-->
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/owl.carousel.min.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>BTC2PP - Bitcoin to PayPal exchange!</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="Bitcoin to PayPal exchange!">
+	<meta name="keywords" content="bitcoin, paypal, exchange, money, cryptocurrency, crypto">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Favicon -->
+	<link href="img/favicon.ico" rel="shortcut icon"/>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+</head>
+<body>
+  <!-- Page Preloder -->
+	<div id="preloder">
+		<div class="loader"></div>
+	</div>
+<script>
+  Swal.fire({
+    title: 'Transaction Status',
+    input: 'text',
+    inputPlaceholder: 'Enter your transacion ID',
+    inputAttributes: {
+      autocapitalize: 'off'
+    },
+    showCancelButton: false,
+    confirmButtonText: 'Search',
+    showLoaderOnConfirm: true,
+    preConfirm: (id) => {
+      window.location.replace("/exchange?id="+id+"&from=search");
+    },
+    allowOutsideClick: false
+  })
+</script>
+
+	<!--====== Javascripts & Jquery ======-->
+	<script src="../js/jquery-3.2.1.min.js"></script>
+	<script src="../js/owl.carousel.min.js"></script>
+	<script src="../js/main.js"></script>
+</body>
+</html>
