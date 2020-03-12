@@ -90,5 +90,24 @@ module.exports = {
       if (err) throw err;
       console.log("New views for post: " + post + '!Total clicks: ' + views_new);
     });
+  },
+  newVisitor: function newVisitor(ip, affiliate){
+    var time = new Date;
+    if(!affiliate){
+      let affiliate = 'not_affiliate'
+      var sql = "INSERT INTO visitors (ip, time, affiliate) VALUES ?";
+      var values = [[ip, time, affiliate]];
+      con.con.query(sql, [values], function(err, result){
+        if (err){console.log("error adding new visitor")}
+        else{console.log("New visitor! IP: " + ip)}
+      })
+    } else {
+      var sql = "INSERT INTO visitors (ip, time, affiliate) VALUES ?";
+      var values = [[ip, time, affiliate]];
+      con.con.query(sql, [values], function(err, result){
+        if (err){console.log("error adding new visitor")}
+        else{console.log("New visitor! IP: " + ip)}
+      })
+    }
   }
 }

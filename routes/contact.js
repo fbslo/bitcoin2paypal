@@ -13,6 +13,8 @@ router.post('/', (req, res) => {
   var name = sanitizer.sanitize(req.body.first_name + ' ' + req.body.last_name)
   var phone = sanitizer.sanitize(req.body.phone)
   var message = sanitizer.sanitize(req.body.message)
+  var ip_raw = req.ip || req.ips || req.connection.remoteAddress
+  var ip = ip_raw.replace('::ffff:', '');
   var date = new Date();
   if(!email || !name || !message){
     res.redirect('/contact?status=false')
