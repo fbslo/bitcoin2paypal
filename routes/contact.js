@@ -22,8 +22,8 @@ router.post('/', (req, res) => {
   else if(!phone){
     let phone = '000000000'
 
-    var sql = "INSERT INTO message (email, name, phone, message, date) VALUES ?";
-    var values = [[email, name, phone, message, date]];
+    var sql = "INSERT INTO message (email, name, phone, message, date, ip) VALUES ?";
+    var values = [[email, name, phone, message, date, ip]];
     con.con.query(sql, [values], function (err, result) { //insert data to MySQL database
       if (err){
         console.log("Error inserting message: " + err)
@@ -35,8 +35,8 @@ router.post('/', (req, res) => {
     });
   }
   else {
-    var sql = "INSERT INTO message (email, name, phone, message, date) VALUES ?";
-    var values = [[email, name, phone, message, date]];
+    var sql = "INSERT INTO message (email, name, phone, message, date, ip) VALUES ?";
+    var values = [[email, name, phone, message, date, ip]];
     con.con.query(sql, [values], function (err, result) { //insert data to MySQL database
       if (err){
         console.log("Error inserting message: " + err)
