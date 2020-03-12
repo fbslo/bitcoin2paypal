@@ -1,0 +1,230 @@
+In this article, we'll download and install MySQL on Windows and validate how it works by creating a simple database with a couple of tables.
+How to Set Up MySQL
+
+Windows (especially Windows 10) requires a bit of work. To download the latest version of MySQL you need to go to the official website and download the community version. The installer is fairly straightforward but you might run into several problems.
+
+If you don't run into any problems - choose a password and wait for the installation procedure to go through all its paces.
+
+Now, depending on which language you wish to use MySQL with, you'll need to install a Connector which is basically a driver specific for every language. For an example, Connector/J is the official Java Database Connectivity (JDBC) driver, whereas Connector/Python is the official Python connector.
+
+All of the connectors can be found on the MySQL Downloads page.
+
+We'll be using a root user with the password simplepassword. Many people decide to leave the password blank, to make things simpler on their dev environment.
+
+Now that we have MySQL (hopefully) installed on Windows, you should either navigate to the installation bin folder which is most likely something along the lines of C:\Program files\MySQL\MySQL Server 8.0\bin in the command line:
+
+> cd C:\Program files\MySQL\MySQL Server 8.0\bin
+
+Or add the bin folder to path environment variable by going to System Properties -> Environment Variables -> Path and adding a path to your bin folder:
+
+set environment variable
+Setting Up the Database
+
+We'll create an example database called studies to help students keep track of their Computer Science Bachelor Studies. We'll create two tables to begin with:
+
+    exams - keeps track of all the exams the student has passed/failed.
+    courses - contains all the courses the student needs to pass to finish their Bachelor Studies.
+
+Note: MySQL statements are ended with a semi-colon (;)
+
+If you've added MySQL's bin folder as an environment variable, you can use it through the terminal just by calling mysql. Of course, we have to provide credentials alongside the initial command:
+
+> mysql -u root -p simplepassword
+
+The -u flag represents the username and the -p flag represents the password.
+
+Logging in will prompt you with the MySQL Monitor:
+
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 2
+Server version: 8.0.0-log MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql>
+
+Now, let's run the help command and see what we can do:
+
+List of all MySQL commands:
+Note that all text commands must be first on line and end with ';'
+?         (\?) Synonym for `help'.
+clear     (\c) Clear the current input statement.
+connect   (\r) Reconnect to the server. Optional arguments are db and host.
+delimiter (\d) Set statement delimiter.
+ego       (\G) Send command to mysql server, display result vertically.
+exit      (\q) Exit mysql. Same as quit.
+go        (\g) Send command to mysql server.
+help      (\h) Display this help.
+notee     (\t) Don't write into outfile.
+print     (\p) Print current command.
+prompt    (\R) Change your mysql prompt.
+quit      (\q) Quit mysql.
+rehash    (\#) Rebuild completion hash.
+source    (\.) Execute an SQL script file. Takes a file name as an argument.
+status    (\s) Get status information from the server.
+tee       (\T) Set outfile [to_outfile]. Append everything into given outfile.
+use       (\u) Use another database. Takes database name as argument.
+charset   (\C) Switch to another charset. Might be needed for processing binlog with multi-byte charsets.
+warnings  (\W) Show warnings after every statement.
+nowarning (\w) Don't show warnings after every statement.
+resetconnection(\x) Clean session context.
+
+For server side help, type 'help contents'
+
+mysql>
+
+What we're really interested in is what commands can we use to manipulate data. So we can navigate to help <item> where <item> can be: Account Management, Compound Statements, Data Manipulation, Functions, Plugins etc... We're interested in Data Manipulation, since we want to Create a table:
+
+mysql> help Data Manipulation
+You asked for help about help category: "Data Manipulation"
+For more information, type 'help <item>', where <item> is one of the following
+topics:
+   CALL
+   DELETE
+   DO
+   DUAL
+   HANDLER
+   INSERT
+...
+
+You can read more about these by calling help <item> again, but these are generally pretty straightforward.
+
+Let's create a database called studies:
+
+mysql> create database studies;
+
+It's created, but we're not "in the database" by default. Let's take a look at all the databases we currently have created on the server:
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| studies            |
++--------------------+
+1 rows in set (0.00 sec)
+
+Now, let's go ahead and use the database:
+
+mysql> use studies;
+
+You should see "Database changed" printed out after that command if everything went well.
+
+Let's take a look at how our courses table will look like:
+Subscribe to our Newsletter
+
+Get occassional tutorials, guides, and jobs in your inbox. No spam ever. Unsubscribe at any time.
+Newsletter Signup
+CourseID 	Name 	Semester 	ESPB
+primary key, int 	varchar 	int 	int
+
+Note: MySQL supports line breaking in the command line, and waits for a line that ends with ; to end the statement, so you can type the following line-by-line, instead of all at once.
+
+CREATE TABLE courses (
+    CourseID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(50) NOT NULL,
+    Semester INT NOT NULL,
+    ESPB INT NOT NULL
+);
+
+This creates a table, called courses with several rows CourseID, Name, Semester, andESPB. Each of them have their respective data types such as INT and VARCHAR. All of them are NOT NULL, which means that if we try to enter a NULL value, an exception is thrown.
+
+The CourseID column is also set to be a PRIMARY KEY, which means that it'll be used as the identification key for courses. AUTO_INCREMENT means that each time we add a new course to the table, the CourseID will be incremented automatically by 1 to avoid duplicate ID's.
+
+Now, let's do the same with the exams table:
+ID 	CourseID 	YearTaken 	Period 	Grade 	Points 	Final
+primary key, int 	foreign key, int 	int 	varchar 	int 	float 	boolean
+
+CREATE TABLE exams (
+    ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    CourseID INT NOT NULL REFERENCES courses(CourseID),
+    YearTaken INT DEFAULT NULL,
+    Period VARCHAR(20) DEFAULT NULL,
+    Grade INT NOT NULL,
+    Points FLOAT NOT NULL,
+    Final BOOLEAN NOT NULL
+);
+
+Here, we're using REFERENCES to define a Foreign ID, which is just an ID from another table that should match with the ID in this table. Since exams belong to a course, each exam should have a valid CourseID.
+
+We're using YearTaken instead of simply "Year" since "Year" is a keyword in SQL.
+
+Let's fill these two tables up with some data so we have something to work with:
+
+INSERT INTO courses VALUES (2100, "Algorithms and Data Structures", 3, 6);
+INSERT INTO courses VALUES (1520, "Linear Algebra and Analytic Geometry", 1, 7);
+INSERT INTO courses VALUES (666, "Calculus 2", 4, 6);
+INSERT INTO courses VALUES (782, "Methodology of Scientific Research", 8, 2);
+INSERT INTO courses VALUES (1890, "Object-Oriented Programming", 4, 6);
+INSERT INTO courses VALUES (220, "Programming 1", 1, 8);
+
+INSERT INTO exams (CourseID, YearTaken, Period, Grade, Points, Final)
+    VALUES (2100, 2018, "june", 9, 82, true);
+INSERT INTO exams (CourseID, YearTaken, Period, Grade, Points, Final)
+    VALUES (1520, 2017, "july", 5, 41, false);
+INSERT INTO exams (CourseID, YearTaken, Period, Grade, Points, Final)
+    VALUES (1520, 2017, "sept", 8, 71, true);
+INSERT INTO exams (CourseID, Grade, Points, Final)
+    VALUES (1890, 10, 100, true);
+INSERT INTO exams (CourseID, Grade, Points, Final)
+    VALUES (220, 8, 79, false);
+INSERT INTO exams (CourseID, Grade, Points, Final)
+    VALUES (220, 10, 92, true);
+
+Running these commands should result in:
+
+Query OK, `n` rows affected (time_elapsed)
+
+Let's take a look at the tables we have by running:
+
+mysql> show tables;
+
+This would result in:
+
++-------------------+
+| Tables_in_studies |
++-------------------+
+| courses           |
+| exams             |
++-------------------+
+2 rows in set (0.00 sec)
+
+Now, we can call several queries for these tables, such as INSERT, ALTER, DELETE, SELECT, etc.
+
+By running:
+
+select * from courses;
+
+we're asking for everything from the courses table:
+
+mysql> select * from courses;
++----------+--------------------------------------+----------+------+
+| CourseID | Name                                 | Semester | ESPB |
++----------+--------------------------------------+----------+------+
+|      220 | Programming 1                        |        1 |    8 |
+|      666 | Calculus 2                           |        4 |    6 |
+|      782 | Methodology of Scientific Research   |        8 |    2 |
+|     1520 | Linear Algebra and Analytic Geometry |        1 |    7 |
+|     1890 | Object-Oriented Programming          |        4 |    6 |
+|     2100 | Algorithms and Data Structures       |        3 |    6 |
++----------+--------------------------------------+----------+------+
+6 rows in set (0.00 sec)
+
+Looks like our database works just fine!
+Windows 10 Installation Issues
+
+The installer starts, but then stops on it's own. Potential solutions:
+
+    Open "Task Manager" and if there's a "Windows Installer" running that's using no resources - kill it, there's a chance the installation will proceed normally after that.
+    Run the installer as admin - you can't do this in the usual Right Click -> Run as Administrator (not available for .msi files). Instead you have to navigate to the installer in the admin console (right click on the windows icon, then PowerShell (Admin)), and run it from there, or just type in the full path in the admin console. In our case the full path was H:\Downloads\mysql-installer-community-8.0.17.0.msi.
+
+Failing requirements:
+
+    If during the installation you get a message saying you have "Failing requirements", going back to the "choosing a setup type" tab and choosing "custom" and then removing the failing requirements (if you don't have excel installed for example) might solve the issue.
+
+Conclusion

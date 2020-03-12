@@ -11,7 +11,9 @@ var con = require("../scripts/config.js")
 router.get('/', (req, res) => {
   //get affiliate id from url (?ref=affiliate_id)
   var affiliate_id = req.query.ref
-  var ref = req.query.ref 
+  var ref = req.query.ref
+  var ip_raw = req.ip || req.ips || req.connection.remoteAddress
+  var ip = ip_raw.replace('::ffff:', '');
   //check if affiliate id exisits
   if(affiliate_id != null || affiliate_id != undefined){
     //save new visit to database
@@ -21,6 +23,8 @@ router.get('/', (req, res) => {
     //new visitor, but not affiliate
     functions.saveAffiliateID('not_affiliate')
   }
+  //add new visitor to database
+  functions.newVisitor(ip, affiliate_id) //log new visitor to the database
   //get exchange rate
   var rate = functions.getExchangeRate();
   //get views & render file
