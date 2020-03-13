@@ -28,7 +28,7 @@ router.get('/dashboard', (req, res) => {
       sum += Number(result[3][i].receive)
     }
     var completed_tx = result[4].length
-    var revenue = (sum.toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2})
+    var revenue = (sum.toFixed(0)).toLocaleString(undefined, {maximumFractionDigits:2})
     var addresses_used = result[5].length
     var addresses_unused = result[6].length
     //table statistics
@@ -65,6 +65,10 @@ router.get('/dashboard', (req, res) => {
       table: table
     })
   })
+})
+
+app.get('/post', (req, res) => {
+
 })
 
 module.exports = router;

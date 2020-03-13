@@ -5,6 +5,7 @@ const https = require('https');
 var sanitizer = require('sanitize')();
 const RateLimit = require('express-rate-limit');
 var sqlinjection = require('sql-injection');
+var basicAuth = require('express-basic-auth')
 
 //connect to MySQL
 var con = require("./scripts/config.js")
@@ -51,7 +52,10 @@ app.use('/test', require('./routes/test.js'));
 //contact information
 app.use('/contact_submit', require('./routes/contact.js'));
 //admin panel
-app.use('/admin', require('./routes/admin.js'));
+app.use('/admin', basicAuth({
+          users: { admin: 'supersecret123' },
+          challenge: true // <--- needed to actually show the login dialog!
+      }), require('./routes/admin.js'));
 //blog posts
 app.use('/blog', require('./routes/blog.js'));
 //terms and conditions & privacy policy
