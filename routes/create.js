@@ -18,7 +18,7 @@ router.post('/', (req, res) => {
   var ip = ip_raw.replace('::ffff:', '');
   var ref = req.body.ref
   var receive = (+req.body.receive).toFixed(2)
-  
+
 
   //get unused address
   con.con.query("SELECT address FROM addresses WHERE status = 'UNUSED';", function (err, result) {
@@ -30,9 +30,10 @@ router.post('/', (req, res) => {
     }
     else{
       var address = result[0].address
+      var status = 'UNPAID'
 
-      var sql = "INSERT INTO exchange (id, email, amount, date, address, refferal, receive, ip) VALUES ?";
-      var values = [[id, email, amount, date, address, ref, receive, ip]];
+      var sql = "INSERT INTO exchange (id, email, amount, date, address, refferal, receive, ip, status) VALUES ?";
+      var values = [[id, email, amount, date, address, ref, receive, ip, status]];
       con.con.query(sql, [values], function (err, result) { //insert data to MySQL database
         if (err) throw err;
         console.log("New transaction! Values: " + values)
