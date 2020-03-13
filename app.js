@@ -57,7 +57,7 @@ app.use('/blog', require('./routes/blog.js'));
 //terms and conditions & privacy policy
 app.use('/legal', require('./routes/legal.js'));
 //api to process all admin requests (e.g. add addresses, complete tx's, add posts)
-app.use('/api', require('./routes/api.js'))
+app.use('/api', require('./routes/api.js'));
 //The 404 Route (ALWAYS Keep this as the last route)
 app.get('*', function(req, res){
   res.status(404).render('errors/404');

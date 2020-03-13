@@ -65,7 +65,7 @@ router.get('/', (req, res) => {
                     amount: amount,
                     address: address,
                     email: email,
-					receive: receive,
+					          receive: receive,
                     status: 'Processing...'
                   })
                 }

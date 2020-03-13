@@ -12,6 +12,7 @@ router.get('/', (req, res) => {
 })
 
 router.get('/dashboard', (req, res) => {
+  var api_key = 'thisismylife'
   //header statistic
   var sum = 0;
   var sql = `SELECT * FROM exchange; SELECT * FROM visitors; SELECT * FROM exchange WHERE status ='PENDING';
@@ -47,7 +48,11 @@ router.get('/dashboard', (req, res) => {
       <td>${(result[0][i].date).substr(0, 10)}</td><td>${result[0][i].email}</td><td>${result[0][i].amount}</td>
       <td>${result[0][i].receive}</td>
       <td><label class='badge badge-${status_code}'>${result[0][i].status}</label></td>
-      <td><button class='btn btn-outline-primary' onClick='complete(${result[0][i].id})'>Complete</button></td></tr>`
+      <td><form action="/api/completeTransaction" method="POST">
+      <input type='hidden' id='key' name='key' value='${api_key}'>
+      <input type='hidden' id='id' name='id' value='${result[0][i].id}'>
+      <input type="submit" value="Complete" class='btn btn-outline-primary'/>
+      </form></tr>`
     }
     res.render('admin/index-2',{
       orders: orders,
