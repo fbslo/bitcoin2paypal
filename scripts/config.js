@@ -12,7 +12,8 @@ var con = mysql.createConnection({
   database: database,
   user: database_user,
   password: database_password,
-  port: database_port
+  port: database_port,
+  multipleStatements: true
 });
 //connect to MySQL database
 con.connect(function(err) {

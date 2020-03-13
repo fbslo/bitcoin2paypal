@@ -15,7 +15,7 @@ const functions = require('./scripts/functions.js')
 //stop smaller DoS attacks b limiting each IP
 const limiter = new RateLimit({
   windowMs: 15*60*1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 2500, // limit each IP to 100 requests per windowMs
   delayMs: 0 // disable delaying — full speed until the max limit is  reached
 });
 
@@ -56,6 +56,8 @@ app.use('/admin', require('./routes/admin.js'));
 app.use('/blog', require('./routes/blog.js'));
 //terms and conditions & privacy policy
 app.use('/legal', require('./routes/legal.js'));
+//api to process all admin requests (e.g. add addresses, complete tx's, add posts)
+app.use('/api', require('./routes/api.js'))
 //The 404 Route (ALWAYS Keep this as the last route)
 app.get('*', function(req, res){
   res.status(404).render('errors/404');
