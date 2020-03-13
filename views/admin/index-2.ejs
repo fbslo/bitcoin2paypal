@@ -43,28 +43,40 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="index-2.html">
+            <a class="nav-link" href="/admin/dashboard">
               <i class="fa fa-home menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="pages/widgets.html">
+            <a class="nav-link" href="/admin/blog">
               <i class="fa fa-puzzle-piece menu-icon"></i>
-              <span class="menu-title">Widgets</span>
+              <span class="menu-title">Blog</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/posts">
+              <i class="fa fa-puzzle-piece menu-icon"></i>
+              <span class="menu-title">Posts</span>
             </a>
           </li>
           <li class="nav-item d-none d-lg-block">
-            <a class="nav-link" data-toggle="collapse" href="#sidebar-layouts" aria-expanded="false" aria-controls="sidebar-layouts">
-              <i class="fas fa-columns menu-icon"></i>
-              <span class="menu-title">Sidebar Layouts</span>
-              <i class="menu-arrow"></i>
+            <a class="nav-link" href="/admin/addresses">
+              <i class="fa fa-puzzle-piece menu-icon"></i>
+              <span class="menu-title">Addresses</span>
             </a>
-            <div class="collapse" id="sidebar-layouts">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/layout/compact-menu.html">Compact menu</a></li>
-              </ul>
-            </div>
+          </li>
+          <li class="nav-item d-none d-lg-block">
+            <a class="nav-link" href="/admin/affiliates">
+              <i class="fa fa-puzzle-piece menu-icon"></i>
+              <span class="menu-title">Affiliates</span>
+            </a>
+          </li>
+          <li class="nav-item d-none d-lg-block">
+            <a class="nav-link" href="/admin/visitors">
+              <i class="fa fa-puzzle-piece menu-icon"></i>
+              <span class="menu-title">Visitors</span>
+            </a>
           </li>
         </ul>
       </nav>
@@ -87,7 +99,6 @@
                           Transactions
                         </p>
                         <h2><%= orders %></h2>
-                        <label class="badge badge-outline-success badge-pill">2.7% increase</label>
                       </div>
                       <div class="statistics-item">
                         <p>
@@ -95,7 +106,6 @@
                           Visitors
                         </p>
                         <h2><%= clicks %></h2>
-                        <label class="badge badge-outline-danger badge-pill">30% decrease</label>
                       </div>
                       <div class="statistics-item">
                         <p>
@@ -103,7 +113,6 @@
                           Completed
                         </p>
                         <h2><%= completed_tx %></h2>
-                        <label class="badge badge-outline-success badge-pill">12% increase</label>
                       </div>
                       <div class="statistics-item">
                         <p>
@@ -111,7 +120,6 @@
                           Pending
                         </p>
                         <h2><%= pending %></h2>
-                        <label class="badge badge-outline-success badge-pill">10% increase</label>
                       </div>
                       <div class="statistics-item">
                         <p>
@@ -119,7 +127,6 @@
                           Total Revenue
                         </p>
                         <h2><%= revenue %></h2>
-                        <label class="badge badge-outline-success badge-pill">57% increase</label>
                       </div>
                       <div class="statistics-item">
                         <p>
@@ -127,7 +134,6 @@
                           Addresses
                         </p>
                         <h2><%= addresses_unused %></h2>
-                        <label class="badge badge-outline-success badge-pill"><%= addresses_used %> used</label>
                       </div>
                   </div>
                 </div>
@@ -166,7 +172,7 @@
           </div>
           <p>
 
-          <div class="row">
+<!--       <div class="row">
             <div class="col-12">
               <div class="card">
                 <div class="card-body">
@@ -212,13 +218,12 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2018 . All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="far fa-heart text-danger"></i></span>
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © <script>document.write(new Date().getFullYear());</script> . All rights reserved.</span>
           </div>
         </footer>
         <!-- partial -->
