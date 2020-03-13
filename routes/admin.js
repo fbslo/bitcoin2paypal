@@ -1,148 +1,70 @@
 const express = require('express');
 const router = express.Router();
 
-const request = require('request');
-
-
 //Load functions
 const functions = require('../scripts/functions.js')
 
 //connect to MySQL database
-var database = require("../scripts/config.js")
+var con = require("../scripts/config.js")
 
-//Show admin page
 router.get('/', (req, res) => {
-  //html string that will be send to browser
-  var reo ='<html><head><title>Admin Panel</title></head><body><a href="/admin?president=itsmylife">Admin</a> - <a href="/admin?president=itsmylife&type=refferal">Refferal</a> - <a href="/admin?president=itsmylife&type=message">Messages</a><h1>Admin Panel</h1>{${table}}</body></html>';
+  res.render('admin/admin')
+})
 
-  //sets and returns html table with results from sql select
-  //Receives sql query and callback function to return the table
-  function setResHtml(sql, cb){
-    database.pool.getConnection((err, con)=>{
-      if(err){
-        console.log("Error with admin page! database.pool.getConnection")
-        res.status(500)
-        res.render('errors/500')
-      } else{
-        con.query(sql, (err, res, cols)=>{
-          if(err){
-            console.log("Error with admin page! con.query()")
-            res.status(500)
-            res.render('errors/500')
-          }
-          var table =''; //to store html table
-
-          //create html table with data from res.
-          for(var i=0; i<res.length; i++){
-				table +='<tr><td>'+ (i+1) +'</td><td>'+ res[i].id +'</td><td>'+ res[i].amount +'</td><td>'+ res[i].email +'</td><td>'+ res[i].date +'</td><td>'+ res[i].address +'</td><td>'+res[i].refferal +'</td><td>'+res[i].ip+'</td><td>'+ res[i].receive+'</td><td><button><a href="https://blockchain.info/rawaddr/'+ res[i].address +'">Check</a></button></td></tr>';
-          }
-          table ='<table border="1"><tr><th>Nr.</th><th>ID</th><th>Amount</th><th>Email</th><th>date</th><th>Address</th></th><th>Affiliate</th><th>IP</th><th>Receive</th><th>Balance</th></tr>'+ table +'</table>';
-
-          con.release(); //Done with mysql connection
-
-          return cb(table);
-        });
-      }
-    });
-  }
-
-  //for refferal
-  //Receives sql query and callback function to return the table
-  function refferal(sql, cb){
-    database.pool.getConnection((err, con)=>{
-      if(err){
-        console.log("Error with admin page! database.pool.getConnection")
-        res.status(500)
-        res.render('errors/500')
-      } else{
-        con.query(sql, (err, res, cols)=>{
-          if(err){
-            console.log("Error with admin page! con.query()")
-            res.status(500)
-            res.render('errors/500')
-          }
-          var table =''; //to store html table
-
-          //create html table with data from res.
-          for(var i=0; i<res.length; i++){
-			    setTimeout( function (i) {
-					table +='<tr><td>'+ (i+1) +'</td><td>'+ res[i].affiliate_id +'</td><td>'+ res[i].clicks +'</td><td>'+ res[i].other +'</td></tr>';
-				}, 2500 * i, i);
-		  }
-          table ='<table border="1"><tr><th>Nr.</th><th>Affiliate ID</th><th>Clicks</th><th>Other</th></tr>'+ table +'</table>';
-
-          con.release(); //Done with mysql connection
-
-          return cb(table);
-        });
-      }
-    });
-  }
-
-  //for messages
-  //Receives sql query and callback function to return the table
-  function messages(sql, cb){
-    database.pool.getConnection((err, con)=>{
-      if(err){
-        console.log("Error with admin page! database.pool.getConnection")
-        res.status(500)
-        res.render('errors/500')
-      } else{
-        con.query(sql, (err, res, cols)=>{
-          if(err){
-            console.log("Error with admin page! con.query()")
-            res.status(500)
-            res.render('errors/500')
-          }
-          var table =''; //to store html table
-
-          //create html table with data from res.
-          for(var i=0; i<res.length; i++){
-            table +='<tr><td>'+ (i+1) +'</td><td>'+ res[i].name +'</td><td>'+ res[i].email +'</td><td>'+ res[i].phone +'</td><td>'+ res[i].message +'</td><td>'+ res[i].date +'</td></tr>';
-          }
-          table ='<table border="1"><tr><th>Nr.</th><th>Name</th><th>Email</th><th>Phone</th><th>Message</th><th>Date</th></tr>'+ table +'</table>';
-
-          con.release(); //Done with mysql connection
-
-          return cb(table);
-        });
-      }
-    });
-  }
-
-  //buttons
-  var button = '<a href="/admin?president=itsmylife">Exchnage</a> <a href="/admin?president=itsmylife?type=refferal">Affiliate</a> <a href="/admin?president=itsmylife?type=message">Message</a><p>'
-  //get password
-  var password = req.query.president
-  //get type
-  var type = req.query.type
-  //check if password is correct
-  if(password == 'itsmylife'){
-    if(!type){
-      let sql ='SELECT * FROM exchange ORDER BY date'; //id, email, amount, date, address
-      setResHtml(sql, resql=>{
-        reo = reo.replace('{${table}}', resql);
-        res.send(reo);
-      });
+router.get('/dashboard', (req, res) => {
+  var api_key = 'thisismylife'
+  //header statistic
+  var sum = 0;
+  var sql = `SELECT * FROM exchange; SELECT * FROM visitors; SELECT * FROM exchange WHERE status ='PENDING';
+  SELECT receive FROM exchange WHERE status ='COMPLETED' OR status='PENDING';
+  SELECT receive FROM exchange WHERE status ='COMPLETED';
+  SELECT address FROM addresses WHERE status ='USED';
+  SELECT address FROM addresses WHERE status ='UNUSED';` //[0] = orders, [1] = visitors, [2] = pending, [3] = revenue, [4] = completed, [5][6] = unused/used addresses,
+  con.con.query(sql, function(err, result){
+    var orders = result[0].length
+    var visitors = (result[1].length).toLocaleString(undefined, {maximumFractionDigits:2})
+    var pending = result[2].length
+    for (i=0;i<result[3].length;i++){
+      sum += Number(result[3][i].receive)
     }
-    if(type == 'refferal'){
-      let sql ='SELECT * FROM affiliate ORDER BY clicks'; //get affiliates and clicks
-      refferal(sql, resql=>{
-        reo = reo.replace('{${table}}', resql);
-        res.send(reo);
-      });
+    var completed_tx = result[4].length
+    var revenue = (sum.toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2})
+    var addresses_used = result[5].length
+    var addresses_unused = result[6].length
+    //table statistics
+    var table = ''
+    for(i=0;i<result[0].length;i++){
+      var status_code;
+      if (result[0][i].status == 'PENDING'){
+        status_code = 'info'
+      }
+      if (result[0][i].status == 'COMPLETED'){
+        status_code = 'primary'
+      }
+      if (result[0][i].status == 'UNPAID'){
+        status_code = 'danger'
+      }
+      table +=  `<tr><td>${i+1}</td><td>${result[0][i].id}</td>
+      <td>${(result[0][i].date).substr(0, 10)}</td><td>${result[0][i].email}</td><td>${result[0][i].amount}</td>
+      <td>${result[0][i].receive}</td>
+      <td><label class='badge badge-${status_code}'>${result[0][i].status}</label></td>
+      <td><form action="/api/completeTransaction" method="POST">
+      <input type='hidden' id='key' name='key' value='${api_key}'>
+      <input type='hidden' id='id' name='id' value='${result[0][i].id}'>
+      <input type="submit" value="Complete" class='btn btn-outline-primary'/>
+      </form></tr>`
     }
-    if(type == 'message'){
-      let sql ='SELECT * FROM message'; //get messages
-      messages(sql, resql=>{
-        reo = reo.replace('{${table}}', resql);
-        res.send(reo);
-      });
-    }
-  } else {
-    res.status(404)
-    res.render('errors/404')
-  }
-});
+    res.render('admin/index-2',{
+      orders: orders,
+      clicks: visitors,
+      completed_tx: completed_tx,
+      revenue: revenue,
+      addresses_used: addresses_used,
+      addresses_unused: addresses_unused,
+      pending: pending,
+      table: table
+    })
+  })
+})
 
 module.exports = router;
