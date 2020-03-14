@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Melody Admin</title>
+  <title>Admin Dashboard</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="../../admin/vendors/iconfonts/font-awesome/css/all.min.css">
   <link rel="stylesheet" href="../../admin/vendors/css/vendor.bundle.base.css">
@@ -17,70 +16,71 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="../../admin/css/style.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="http://www.urbanui.com/" />
 </head>
-<body>
+<body class="horizontal-menu">
   <div class="container-scroller">
-    <!-- partial -->
-    <div class="container-fluid page-body-wrapper">
-      <!-- partial -->
-      <!-- partial:partials/_sidebar.html -->
-      <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <ul class="nav">
-          <li class="nav-item nav-profile">
-            <div class="nav-link">
-        <!--      <div class="profile-image">
-                <img src="images/faces/face5.jpg" alt="image"/>
-              </div> -->
-              <div class="profile-name">
-                <p class="name">
-                  Welcome Admin
-                </p>
-                <p class="designation">
-                  Administrator #1
-                </p>
-              </div>
+    <nav class="navbar horizontal-layout-navbar fixed-top navbar-expand-lg">
+      <div class="navbar-menu-wrapper d-flex flex-grow">
+        <ul class="navbar-nav navbar-nav-left collapse navbar-collapse" id="horizontal-top-example">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="/admin"  aria-expanded="false">
+              Dashboard
+            </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="employees-dropdown" data-toggle="dropdown" aria-expanded="false">
+              Blog
+            </a>
+            <div class="dropdown-menu navbar-dropdown" aria-labelledby="employees-dropdown">
+              <a class="dropdown-item" href="/admin/posts">
+                <i class="mdi mdi-monitor-multiple mr-2 text-primary"></i>
+                Posts
+              </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="/admin/addpost">
+                <i class="mdi mdi-scale-balance mr-2 text-primary"></i>
+                Add Post
+              </a>
             </div>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/dashboard">
-              <i class="fa fa-home menu-icon"></i>
-              <span class="menu-title">Dashboard</span>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="/admin/visitors" id="actions-dropdown" data-toggle="dropdown" aria-expanded="false">
+              Affiliates & Visitors
             </a>
+            <div class="dropdown-menu navbar-dropdown" aria-labelledby="actions-dropdown">
+              <a class="dropdown-item" href="#">
+                <i class="mdi mdi-launch mr-2 text-primary"></i>
+                Affiliates
+              </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">
+                <i class="fa fa-user-multiple-outline mr-2 text-primary"></i>
+                Visitors
+              </a>
+            </div>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/blog">
-              <i class="fa fa-puzzle-piece menu-icon"></i>
-              <span class="menu-title">Blog</span>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+              Addresses
             </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/posts">
-              <i class="fa fa-puzzle-piece menu-icon"></i>
-              <span class="menu-title">Posts</span>
-            </a>
-          </li>
-          <li class="nav-item d-none d-lg-block">
-            <a class="nav-link" href="/admin/addresses">
-              <i class="fa fa-puzzle-piece menu-icon"></i>
-              <span class="menu-title">Addresses</span>
-            </a>
-          </li>
-          <li class="nav-item d-none d-lg-block">
-            <a class="nav-link" href="/admin/affiliates">
-              <i class="fa fa-puzzle-piece menu-icon"></i>
-              <span class="menu-title">Affiliates</span>
-            </a>
-          </li>
-          <li class="nav-item d-none d-lg-block">
-            <a class="nav-link" href="/admin/visitors">
-              <i class="fa fa-puzzle-piece menu-icon"></i>
-              <span class="menu-title">Visitors</span>
-            </a>
+            <div class="dropdown-menu navbar-dropdown" aria-labelledby="actions-dropdown">
+              <a class="dropdown-item" href="/admin/addresses">
+                <i class="mdi mdi-launch mr-2 text-primary"></i>
+                Addresses
+              </a>
+              <a class="dropdown-item" href="/admin/addaddress">
+                <i class="mdi mdi-launch mr-2 text-primary"></i>
+                Add Address
+              </a>
+            </div>
           </li>
         </ul>
-      </nav>
-      <!-- partial -->
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center ml-auto" type="button" data-toggle="collapse" data-target="#horizontal-top-example">
+          <span class="fa fa-bars"></span>
+        </button>
+      </div>
+    </nav>
+    <div class="container-fluid page-body-wrapper">
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="page-header">
@@ -141,7 +141,6 @@
             </div>
           </div>
 
-
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">Data table</h4>
@@ -158,7 +157,8 @@
                             <th>BTC Amount</th>
                             <th>USD Amount</th>
                             <th>Status</th>
-                            <th>Actions</th>
+                            <th>Complete</th>
+                            <th>Delete</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -172,58 +172,12 @@
           </div>
           <p>
 
-<!--       <div class="row">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-md-flex justify-content-between align-items-center">
-                    <div class="d-flex align-items-center mb-3 mb-md-0">
-                      <button class="btn btn-social-icon btn-facebook btn-rounded">
-                        <i class="fab fa-facebook-f"></i>
-                      </button>
-                      <div class="ml-4">
-                        <h5 class="mb-0">Facebook</h5>
-                        <p class="mb-0">813 friends</p>
-                      </div>
-                    </div>
-                    <div class="d-flex align-items-center mb-3 mb-md-0">
-                      <button class="btn btn-social-icon btn-twitter btn-rounded">
-                        <i class="fab fa-twitter"></i>
-                      </button>
-                      <div class="ml-4">
-                        <h5 class="mb-0">Twitter</h5>
-                        <p class="mb-0">9000 followers</p>
-                      </div>
-                    </div>
-                    <div class="d-flex align-items-center mb-3 mb-md-0">
-                      <button class="btn btn-social-icon btn-google btn-rounded">
-                        <i class="fab fa-google-plus-g"></i>
-                      </button>
-                      <div class="ml-4">
-                        <h5 class="mb-0">Google plus</h5>
-                        <p class="mb-0">780 friends</p>
-                      </div>
-                    </div>
-                    <div class="d-flex align-items-center">
-                      <button class="btn btn-social-icon btn-linkedin btn-rounded">
-                        <i class="fab fa-linkedin-in"></i>
-                      </button>
-                      <div class="ml-4">
-                        <h5 class="mb-0">Linkedin</h5>
-                        <p class="mb-0">1090 connections</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
         <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
+        <!-- partial:../../partials/_footer.html -->
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © <script>document.write(new Date().getFullYear());</script> . All rights reserved.</span>
+            <span class="text-muted text-center text-sm-right d-block d-sm-inline-block">Server Time: <script>document.write(new Date());</script></span>
           </div>
         </footer>
         <!-- partial -->
@@ -252,6 +206,5 @@
   <script src="../../admin/js/data-table.js"></script>
   <!-- End custom js for this page-->
 </body>
-
 
 </html>
