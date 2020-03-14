@@ -1,8 +1,8 @@
 var mysql = require("mysql");
 
-var database_ip = 'database.com'
-var database_user = 'user_name'
-var database_password = 'user_password'
+var database_ip = 'localhost'
+var database_user = 'root'
+var database_password = 'geslo123'
 var database_port = 3306
 var database = 'exchange'
 

@@ -1,4 +1,4 @@
-scripts/congig.js
+scripts/config.js
 node_modules/
 BACKUP v1.5/
 BACKUP/
@@ -6,3 +6,5 @@ cmd.exe
 instructions/
 dest/
 mysql.txt
+key.pem
+cert.pem

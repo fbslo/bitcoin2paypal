@@ -6,6 +6,8 @@ var sanitizer = require('sanitize')();
 const RateLimit = require('express-rate-limit');
 var sqlinjection = require('sql-injection');
 var basicAuth = require('express-basic-auth')
+const fileUpload = require('express-fileupload');
+
 
 //connect to MySQL
 var con = require("./scripts/config.js")
@@ -20,6 +22,13 @@ const limiter = new RateLimit({
   delayMs: 0 // disable delaying — full speed until the max limit is  reached
 });
 
+//file upload
+app.use(fileUpload({
+    limits: {
+        fileSize: 5000000 //5mb
+    },
+    abortOnLimit: true
+ }));
 app.use(require('sanitize').middleware);
 //create express connection and serve static files
 app.use(bodyParser.urlencoded({ extended: true }));
