@@ -316,14 +316,14 @@
 				<div class="col-md-4">
 					<div class="blog-item">
 						<figure class="blog-thumb">
-							<img src="img/blog/btc.jpg" alt="">
+							<img src="img/blog/<%= last_image %>" alt="">
 						</figure>
 						<div class="blog-text">
-							<div class="post-date">1 mar 2020</div>
-							<h4 class="blog-title"><a href="/blog/how-to-buy-bitcoin">How to Buy Bitcoin Anonymously (Online and Offline)</a></h4>
+							<div class="post-date"><%= last_date %></div>
+							<h4 class="blog-title"><a href="/blog/post?id=<%= last_id %>"><%= last_title %></a></h4>
 							<div class="post-meta">
-								<a href=""><span>by</span> Admin</a>
-								<a href=""><i class="fa fa-eye"></i> <%= views_btc %> Views</a>
+								<a href=""><span>by</span> <%= last_author %></a>
+								<a href=""><i class="fa fa-eye"></i> <%= last_views %> Views</a>
 							</div>
 						</div>
 					</div>
@@ -332,14 +332,14 @@
 				<div class="col-md-4">
 					<div class="blog-item">
 						<figure class="blog-thumb">
-							<img src="img/blog/paypal.jpg" alt="">
+							<img src="img/blog/<%= second_image %>" alt="">
 						</figure>
 						<div class="blog-text">
-							<div class="post-date">23 feb 2020</div>
-							<h4 class="blog-title"><a href="/blog/paypal-credit">How to use PayPal's line of credit to pay off online purchases</a></h4>
+							<div class="post-date"><%= second_date %></div>
+							<h4 class="blog-title"><a href="/blog/post?id=<%= second_id %>"><%= second_title %></a></h4>
 							<div class="post-meta">
-								<a href=""><span>by</span> Admin</a>
-								<a href=""><i class="fa fa-eye"></i> <%= views %> Views</a>
+								<a href=""><span>by</span> <%= second_author %></a>
+								<a href=""><i class="fa fa-eye"></i> <%= second_views %> Views</a>
 							</div>
 						</div>
 					</div>
@@ -348,14 +348,14 @@
 				<div class="col-md-4">
 					<div class="blog-item">
 						<figure class="blog-thumb">
-							<img src="img/blog/yemen.jpg" alt="">
+							<img src="img/blog/<%= third_image %>" alt="">
 						</figure>
 						<div class="blog-text">
-							<div class="post-date">20 feb 2020</div>
-							<h4 class="blog-title"><a href="blog/yemen-civil-war-crypto">Yemen’s Civil War Shows the Dangers of Crypto</a></h4>
+							<div class="post-date"><%= third_date %></div>
+							<h4 class="blog-title"><a href="/blog/post?id=<%= third_id %>"><%= third_title %></a></h4>
 							<div class="post-meta">
-								<a href=""><span>by</span> Admin</a>
-								<a href=""><i class="fa fa-eye"></i> <%= views_yemen %> Views</a>
+								<a href=""><span>by</span> <%= third_author %></a>
+								<a href=""><i class="fa fa-eye"></i> <%= third_views %> Views</a>
 							</div>
 						</div>
 					</div>
