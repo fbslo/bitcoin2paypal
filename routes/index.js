@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
   //get exchange rate
   var rate = functions.getExchangeRate();
   //get views & render file
-  con.con.query("SELECT * FROM views;", function (err, result) {
+  con.con.query("SELECT * FROM blog;", function (err, result) {
     if(err){
       console.log('Error geting views!' + err)
       res.render('index', {
@@ -36,7 +36,7 @@ router.get('/', (req, res) => {
         views: 'NaN',
         views_btc: 'NaN',
         views_yemen: 'NaN',
-		ref: ref
+		    ref: ref
       })
     } else {
       //check if affiliate id exisits in the database
@@ -44,16 +44,49 @@ router.get('/', (req, res) => {
         console.log('Cannot getViews, result is undefined')
       } else {
         //return result
-        views = result[1].views
-        btc = result[0].views
-        yemen = result[2].views
+        var last_views = result[result.length - 1].views
+        var last_title = result[result.length - 1].title
+        var last_author = result[result.length - 1].author
+        var last_date = functions.formatDate(result[result.length - 1].date)
+        var last_id = result[result.length - 1].id
+        var last_image = result[result.length - 1].image
+
+        var second_views = result[result.length - 2].views
+        var second_title = result[result.length - 2].title
+        var second_author = result[result.length - 2].author
+        var second_date = functions.formatDate(result[result.length - 2].date)
+        var second_id = result[result.length - 2].id
+        var second_image = result[result.length - 2].image
+
+        var third_views = result[result.length - 3].views
+        var third_title = result[result.length - 3].title
+        var third_author = result[result.length - 3].author
+        var third_date = functions.formatDate(result[result.length - 3].date)
+        var third_id = result[result.length - 3].id
+        var third_image = result[result.length - 3].image
         //render file
         res.render('index', {
           rate: rate,
-          views: views,
-          views_btc: btc,
-          views_yemen: yemen,
-		  ref: ref
+		      ref: ref,
+          last_title: last_title,
+          last_date: last_date,
+          last_author: last_author,
+          last_date: last_date,
+          last_id: last_id,
+          last_views: last_views,
+          last_image: last_image,
+          second_date: second_date,
+          second_title: second_title,
+          second_views: second_views,
+          second_author: second_author,
+          second_id: second_id,
+          second_image: second_image,
+          third_id: third_id,
+          third_title: third_title,
+          third_author: third_author,
+          third_date: third_date,
+          third_views: third_views + 1,
+          third_image: third_image
         })
       }
     }

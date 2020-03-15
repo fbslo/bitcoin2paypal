@@ -58,7 +58,7 @@ router.get('/', (req, res) => {
       <input type="submit" value="Delete" class='btn btn-outline-danger'/>
       </form></td></tr>`
     }
-    res.render('admin/admin2',{
+    res.render('admin/admin',{
       orders: orders,
       clicks: visitors,
       completed_tx: completed_tx,
