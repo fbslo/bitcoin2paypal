@@ -8,7 +8,7 @@ const functions = require('../scripts/functions.js')
 var con = require("../scripts/config.js")
 
 router.get('/', (req, res) => {
-  res.render('admin/admin')
+  res.render('blog/blog_full')
 })
 
 router.get('/dashboard', (req, res) => {
