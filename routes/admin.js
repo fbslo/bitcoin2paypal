@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
 
 //Load functions
 const functions = require('../scripts/functions.js')
@@ -7,8 +8,10 @@ const functions = require('../scripts/functions.js')
 //connect to MySQL database
 var con = require("../scripts/config.js")
 
-var api_key = 'thisismylife'
-
+//Get API key from configuration file
+let rawdata = fs.readFileSync('./config/config.json');
+let config_json = JSON.parse(rawdata);
+var api_key_backend = config_json.api_key
 
 router.get('/', (req, res) => {
   //header statistic
@@ -48,12 +51,12 @@ router.get('/', (req, res) => {
       <td><label class='badge badge-${status_code}'>${result[0][i].status}</label></td>
 
       <td><form action="/api/completeTransaction" method="POST">
-      <input type='hidden' id='key' name='key' value='${api_key}'>
+      <input type='hidden' id='key' name='key' value='${api_key_backend}'>
       <input type='hidden' id='id' name='id' value='${result[0][i].id}'>
       <input type="submit" value="Complete" class='btn btn-outline-primary'/></form></td>
 
       <td><form action="/api/deleteTransaction" method="POST">
-      <input type='hidden' id='key' name='key' value='${api_key}'>
+      <input type='hidden' id='key' name='key' value='${api_key_backend}'>
       <input type='hidden' id='id' name='id' value='${result[0][i].id}'>
       <input type="submit" value="Delete" class='btn btn-outline-danger'/>
       </form></td></tr>`
@@ -108,7 +111,7 @@ router.get('/dashboard', (req, res) => {
       <td>${result[0][i].receive}</td>
       <td><label class='badge badge-${status_code}'>${result[0][i].status}</label></td>
       <td><form action="/api/completeTransaction" method="POST">
-      <input type='hidden' id='key' name='key' value='${api_key}'>
+      <input type='hidden' id='key' name='key' value='${api_key_backend}'>
       <input type='hidden' id='id' name='id' value='${result[0][i].id}'>
       <input type="submit" value="Complete" class='btn btn-outline-primary'/>
       </form></tr>`
@@ -129,7 +132,7 @@ router.get('/dashboard', (req, res) => {
 router.get('/addpost', (req, res) => {
   var status = req.query.status
   res.render('admin/addpost', {
-    api_key: api_key,
+    api_key: api_key_backend,
     status: status
   })
 })
@@ -156,7 +159,7 @@ router.get('/posts', (req, res) => {
       <input type="submit" value="Edit" class='btn btn-outline-primary'/></a></td>
 
       <td><form action="/api/deletePost" method="POST">
-      <input type='hidden' id='key' name='key' value='${api_key}'>
+      <input type='hidden' id='key' name='key' value='${api_key_backend}'>
       <input type='hidden' id='id' name='id' value='${result[i].id}'>
       <input type="submit" value="Delete" class='btn btn-outline-danger'/>
       </form></td>`
@@ -187,7 +190,7 @@ router.get('/editpost', (req, res) => {
           var body = result[0].blog
           var title = result[0].title
           res.render('admin/editpost', {
-            api_key: api_key,
+            api_key: api_key_backend,
             title: title,
             body: body,
             id: id

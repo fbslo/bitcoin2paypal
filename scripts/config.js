@@ -1,10 +1,11 @@
 var mysql = require("mysql");
+const fs = require('fs');
 
-var database_ip = 'localhost'
-var database_user = 'root'
-var database_password = 'geslo123'
-var database_port = 3306
-var database = 'exchange'
+
+//Get credentials  from configuration file
+let rawdata = fs.readFileSync('./config/config.json');
+let config_json = JSON.parse(rawdata);
+var { database_ip, database_user, database_password, database_port, database } = config_json
 
 //create connection to MySQL database
 var con = mysql.createConnection({
