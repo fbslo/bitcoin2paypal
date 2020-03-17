@@ -83,6 +83,7 @@ router.post('/addPost', (req, res) => {
   var api_key = req.body.api_key
   var date = new Date()
   var author = 'Admin'
+  var views = 0
   var id = functions.generateHexString(10)
   if(!api_key || !title || !body || !image || !req.files || Object.keys(req.files).length === 0){
     //key or id missing
@@ -100,8 +101,8 @@ router.post('/addPost', (req, res) => {
     } else {
       //complete transaction
       image.mv(require('path').dirname(require.main.filename)+'/public/img/blog/'+image.name, function(err) {
-        var sql = "INSERT INTO blog (title, blog, author, date, image, id) VALUES ?"
-        var values = [[title, body, author, date, image.name, id]]
+        var sql = "INSERT INTO blog (title, blog, author, date, image, id, views) VALUES ?"
+        var values = [[title, body, author, date, image.name, id, views]]
         con.con.query(sql, [values], function(error, result){
           if(!err){
             res.redirect('/admin/addPost?status=true')

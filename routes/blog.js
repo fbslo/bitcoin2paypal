@@ -9,8 +9,52 @@ var con = require("../scripts/config.js")
 
 // website.com/blog
 router.get('/', (req, res) => {
-  // TODO: Load all posts
-  res.redirect('/blog/how-to-buy-bitcoin')
+  var sql = 'SELECT * FROM blog;'
+  con.con.query(sql, function(err, result){
+    var blog_top_date = functions.formatDate(result[result.length - 1].date)
+    var blog_top = `<div class="col-md-12">
+          <div class="blog-item bi-feature">
+            <figure class="blog-thumb">
+              <img src="img/blog/${result[result.length - 1].image}" alt="${result[result.length - 1].title}">
+            </figure>
+            <div class="blog-text">
+              <div class="post-date">${blog_top_date}</div>
+              <h4 class="blog-title"><a href="/blog/post?id=${result[result.length - 1].id}">${result[result.length - 1].title}</a></h4>
+              <div class="post-meta">
+                <a href=""><span>by</span> ${result[result.length - 1].author}</a>
+                <a href=""><i class="fa fa-eye"></i> ${result[result.length - 1].views} views</a>
+              </div>
+              <p>${result[result.length - 1].blog}</p>
+            </div>
+          </div>
+        </div>`
+
+    var smaller_posts = ''
+    //use i=1 to avoid first post that is already blog_top
+    for (i=1; i<result.length; i++){
+      var b = result.length - (i+1)
+      var date = functions.formatDate(result[i].date)
+      smaller_posts += `<div class="col-md-6">
+        <div class="blog-item">
+          <figure class="blog-thumb">
+            <img src="img/blog/${result[b].image}" alt="">
+          </figure>
+          <div class="blog-text">
+            <div class="post-date">${date}</div>
+            <h4 class="blog-title"><a href="/blog/post?id=${result[b].id}">${result[b].title}</a></h4>
+            <div class="post-meta">
+              <a href=""><span>by</span> ${result[b].author}</a>
+              <a href=""><i class="fa fa-eye"></i> ${result[b].views} Views</a>
+            </div>
+          </div>
+        </div>
+      </div>`
+    }
+    res.render('blog/blog_full', {
+      blog_top: blog_top,
+      smaller_posts: smaller_posts
+    })
+  })
 })
 
 router.get('/post', (req, res) => {
