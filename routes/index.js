@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
 
 //Load functions
 const functions = require('../scripts/functions.js')
@@ -9,6 +10,10 @@ var con = require("../scripts/config.js")
 
 //Show landing page
 router.get('/', (req, res) => {
+  //get number of transactions from config.json
+  let rawdata = fs.readFileSync('./config/config.json');
+  let tx_number_raw = JSON.parse(rawdata);
+  var tx_number = tx_number_raw.tx_number
   //get affiliate id from url (?ref=affiliate_id)
   var affiliate_id = req.query.ref
   var ref = req.query.ref
@@ -68,6 +73,7 @@ router.get('/', (req, res) => {
         res.render('index', {
           rate: rate,
 		      ref: ref,
+          tx_number: tx_number,
           last_title: last_title,
           last_date: last_date,
           last_author: last_author,

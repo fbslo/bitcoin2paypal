@@ -112,7 +112,6 @@ module.exports = {
   },
   formatDate: function formatDate(d) {
     var date = new Date(d);
-    console.log(date)
     if ( isNaN( date .getTime() ) )
     {
       return d;
