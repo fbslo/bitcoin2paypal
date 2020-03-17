@@ -1,8 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
+
 
 //Load functions
 const functions = require('../scripts/functions.js')
+
+//Get API key from configuration file
+let rawdata = fs.readFileSync('./config.json');
+let config_json = JSON.parse(rawdata);
+var api_key_backend = config_json.api_key
 
 //connect to MySQL database
 var con = require("../scripts/config.js")
@@ -16,7 +23,7 @@ router.post('/completeTransaction', (req, res) => {
     //key or id missing
     res.send("Missing info!")
   }
-  else if (key != 'thisismylife'){
+  else if (key != api_key_backend){
     //key is not correct
     res.send("Wrong key")
   }
@@ -46,7 +53,7 @@ router.post('/deleteTransaction', (req, res) => {
     //key or id missing
     res.send("Missing info!")
   }
-  else if (key != 'thisismylife'){
+  else if (key != api_key_backend){
     //key is not correct
     res.send("Wrong key")
   }
@@ -81,7 +88,7 @@ router.post('/addPost', (req, res) => {
     //key or id missing
     res.send("Missing info!")
   }
-  else if (api_key != 'thisismylife'){
+  else if (api_key != api_key_backend){
     //key is not correct
     res.send("Wrong key")
   }
@@ -115,7 +122,7 @@ router.post('/deletePost', (req, res) => {
     //key or id missing
     res.send("Missing info!")
   }
-  else if (key != 'thisismylife'){
+  else if (key != api_key_backend){
     //key is not correct
     res.send("Wrong key")
   }
@@ -150,7 +157,7 @@ router.post('/editPost', (req, res) => {
     //key or id missing
     res.send("Missing info!")
   }
-  else if (api_key != 'thisismylife'){
+  else if (api_key != api_key_backend){
     //key is not correct
     res.send("Wrong key")
   }
