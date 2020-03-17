@@ -7,7 +7,7 @@ const fs = require('fs');
 const functions = require('../scripts/functions.js')
 
 //Get API key from configuration file
-let rawdata = fs.readFileSync('./config.json');
+let rawdata = fs.readFileSync('./config/config.json');
 let config_json = JSON.parse(rawdata);
 var api_key_backend = config_json.api_key
 
