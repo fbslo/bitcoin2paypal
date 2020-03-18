@@ -58,7 +58,7 @@
                 Add Affiliate
               </a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="/admin/visitors">
+              <a class="dropdown-item" href="#">
                 <i class="fa fa-user-multiple-outline mr-2 text-primary"></i>
                 Visitors
               </a>
@@ -119,58 +119,6 @@
               Dashboard
             </h3>
           </div>
-          <div class="row grid-margin">
-            <div class="col-12">
-              <div class="card card-statistics">
-                <div class="card-body">
-                  <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
-                      <div class="statistics-item">
-                        <p>
-                          <i class="icon-sm fa fa-user mr-2"></i>
-                          Transactions
-                        </p>
-                        <h2><%= orders %></h2>
-                      </div>
-                      <div class="statistics-item">
-                        <p>
-                          <i class="icon-sm fas fa-users mr-2"></i>
-                          Visitors
-                        </p>
-                        <h2><%= clicks %></h2>
-                      </div>
-                      <div class="statistics-item">
-                        <p>
-                          <i class="icon-sm fas fa-check mr-2"></i>
-                          Completed
-                        </p>
-                        <h2><%= completed_tx %></h2>
-                      </div>
-                      <div class="statistics-item">
-                        <p>
-                          <i class="icon-sm fas fa-circle-notch mr-2"></i>
-                          Pending
-                        </p>
-                        <h2><%= pending %></h2>
-                      </div>
-                      <div class="statistics-item">
-                        <p>
-                          <i class="icon-sm fas fa-shopping-cart mr-2"></i>
-                          Total Revenue
-                        </p>
-                        <h2><%= revenue %></h2>
-                      </div>
-                      <div class="statistics-item">
-                        <p>
-                          <i class="icon-sm fas fa-book mr-2"></i>
-                          Addresses
-                        </p>
-                        <h2><%= addresses_unused %></h2>
-                      </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">Data table</h4>
@@ -180,15 +128,10 @@
                     <table id="order-listing" class="table">
                       <thead>
                         <tr>
-                            <th>Order #</th>
-                            <th>ID</th>
-                            <th>Date</th>
-                            <th>Email</th>
-                            <th>BTC Amount</th>
-                            <th>USD Amount</th>
-                            <th>Status</th>
-                            <th>Complete</th>
-                            <th>Delete</th>
+                            <th>Visitor #</th>
+                            <th>IP</th>
+                            <th>Time</th>
+                            <th>Affiliate</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -201,6 +144,7 @@
             </div>
           </div>
           <p>
+
 
         <!-- content-wrapper ends -->
         <!-- partial:../../partials/_footer.html -->
