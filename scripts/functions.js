@@ -81,14 +81,14 @@ module.exports = {
       });
     }
   },
-  updateViews: function updateViews(post, clicks){
+  updateViews: function updateViews(id, clicks){
     //get new number of clicks
-    views_new = clicks
+    views_new = clicks + 1
     //update number of clicks
-    var sql = "UPDATE views SET views = '"+views_new+"' WHERE post = '"+post+"'";
+    var sql = "UPDATE blog SET views = '"+views_new+"' WHERE id = '"+id+"'";
     con.con.query(sql, function (err, result) { //insert data to MySQL database
       if (err) throw err;
-      console.log("New views for post: " + post + '!Total clicks: ' + views_new);
+      console.log("New views for post: " + id + '! Total clicks: ' + views_new);
     });
   },
   newVisitor: function newVisitor(ip, affiliate){
@@ -108,6 +108,35 @@ module.exports = {
         if (err){console.log("error adding new visitor")}
         else{console.log("New visitor! IP: " + ip)}
       })
+    }
+  },
+  formatDate: function formatDate(d) {
+    var date = new Date(d);
+    if ( isNaN( date .getTime() ) )
+    {
+      return d;
+    }
+    else{
+    var month = new Array();
+    month[0] = "Jan";
+    month[1] = "Feb";
+    month[2] = "Mar";
+    month[3] = "Apr";
+    month[4] = "May";
+    month[5] = "Jun";
+    month[6] = "Jul";
+    month[7] = "Aug";
+    month[8] = "Sept";
+    month[9] = "Oct";
+    month[10] = "Nov";
+    month[11] = "Dec";
+
+    day = date.getDate();
+
+    if(day < 10){
+      day = "0"+day;
+    }
+    return day  + " " +month[date.getMonth()] + " " + date.getFullYear();
     }
   }
 }

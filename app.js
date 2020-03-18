@@ -5,6 +5,9 @@ const https = require('https');
 var sanitizer = require('sanitize')();
 const RateLimit = require('express-rate-limit');
 var sqlinjection = require('sql-injection');
+var basicAuth = require('express-basic-auth')
+const fileUpload = require('express-fileupload');
+
 
 //connect to MySQL
 var con = require("./scripts/config.js")
@@ -15,10 +18,17 @@ const functions = require('./scripts/functions.js')
 //stop smaller DoS attacks b limiting each IP
 const limiter = new RateLimit({
   windowMs: 15*60*1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 2500, // limit each IP to 100 requests per windowMs
   delayMs: 0 // disable delaying — full speed until the max limit is  reached
 });
 
+//file upload
+app.use(fileUpload({
+    limits: {
+        fileSize: 5000000 //5mb
+    },
+    abortOnLimit: true
+ }));
 app.use(require('sanitize').middleware);
 //create express connection and serve static files
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -51,11 +61,16 @@ app.use('/test', require('./routes/test.js'));
 //contact information
 app.use('/contact_submit', require('./routes/contact.js'));
 //admin panel
-app.use('/admin', require('./routes/admin.js'));
+app.use('/admin', basicAuth({
+          users: { admin: 'supersecret123' },
+          challenge: true // <--- needed to actually show the login dialog!
+      }), require('./routes/admin.js'));
 //blog posts
 app.use('/blog', require('./routes/blog.js'));
 //terms and conditions & privacy policy
 app.use('/legal', require('./routes/legal.js'));
+//api to process all admin requests (e.g. add addresses, complete tx's, add posts)
+app.use('/api', require('./routes/api.js'));
 //The 404 Route (ALWAYS Keep this as the last route)
 app.get('*', function(req, res){
   res.status(404).render('errors/404');
