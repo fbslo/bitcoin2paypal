@@ -197,4 +197,46 @@ router.post('/editPost', (req, res) => {
   }
 })
 
+router.post('/deleteAffiliate', (req, res) => {
+  var key = req.body.key
+  var id = req.body.id
+  if(key != api_key_backend){
+    res.send("Wrong key!")
+  }
+  if(!id || !key){
+    res.send("Missing info!")
+  }
+  //delete affiliate from database
+  var sql = "DELETE FROM affiliate WHERE affiliate_id=?"
+  con.con.query(sql, id, function(err, result){
+    if(err){ res.send("ERROR DELETING FROM DATABASE!" + err)}
+    else {
+      res.redirect('/admin/affiliates?deletestatus=true')
+    }
+  })
+})
+
+router.post('/addAffiliate', (req, res) => {
+  var key = req.body.api_key
+  var affiliate_id = req.body.id
+  var other = req.body.other
+  var clicks = 0
+  var id = req.body.id
+  if(key != api_key_backend){
+    res.send("Wrong key!")
+  }
+  if(!id || !key){
+    res.send("Missing info!")
+  }
+  var values = [[id, clicks, other]]
+  var sql = 'INSERT INTO affiliate (affiliate_id, clicks, other) VALUES ?'
+  con.con.query(sql, [values], function(err, result){
+    if(!err){
+      res.redirect('/admin/addaffiliate?status=true')
+    } else {
+      res.redirect('/admin/affiliate?deletestatus=false')
+    }
+  })
+})
+
 module.exports = router;

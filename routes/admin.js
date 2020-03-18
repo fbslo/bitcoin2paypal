@@ -201,6 +201,47 @@ router.get('/editpost', (req, res) => {
   }
 })
 
+router.get('/affiliates', (req, res) => {
+  var sql = 'SELECT * FROM affiliate;'
+  con.con.query(sql, function(err, result){
+    var table = ''
+    for(i=0;i<result.length;i++){
+      table += `<tr><td>${i+1}</td><td>${result[i].affiliate_id}</td>
+      <td>${result[i].clicks}</td><td>${result[i].other}</td>
 
+      <td><form action="/api/deleteAffiliate" method="POST">
+      <input type='hidden' id='key' name='key' value='${api_key_backend}'>
+      <input type='hidden' id='id' name='id' value='${result[i].affiliate_id}'>
+      <input type="submit" value="Delete" class='btn btn-outline-danger'/>
+      </form></td>`
+    }
+    res.render('admin/affiliates', {
+      status: req.query.deletestatus,
+      table: table
+    })
+  })
+})
+
+router.get('/addaffiliate', (req, res) => {
+  var status = req.query.status
+  res.render('admin/add_affiliate', {
+    status: status,
+    api_key: api_key_backend
+  })
+})
+
+router.get('/visitors', (req, res) => {
+  var sql = 'SELECT * FROM visitors;'
+  con.con.query(sql, function(err, result){
+    var table = ''
+    for(i=0;i<result.length;i++){
+      table += `<tr><td>${i+1}</td><td>${result[i].ip}</td>
+      <td>${result[i].time}</td><td>${result[i].affiliate}</td>`
+    }
+    res.render('admin/visitors', {
+      table: table
+    })
+  })
+})
 
 module.exports = router;
