@@ -24,7 +24,7 @@
     "sql-injection": "0.0.6"
   },
   "devDependencies": {
-    "nodemon": "^1.19.4"
+    "nodemon": "^2.0.2"
   },
   "scripts": {
     "dev": "nodemon ./app.js"
