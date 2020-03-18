@@ -5,13 +5,14 @@ const https = require('https');
 var sanitizer = require('sanitize')();
 const RateLimit = require('express-rate-limit');
 var sqlinjection = require('sql-injection');
+var fs = require('fs');
 
 //connect to MySQL
 var con = require("./scripts/config.js")
 
 // Variables for https and http
-var port_http = 80 //port for http
-var port_https = 443 //port for https
+var port_http = 8080 //port for http
+var port_https = 4430 //port for https
 
 //get functions from file
 const functions = require('./scripts/functions.js')
