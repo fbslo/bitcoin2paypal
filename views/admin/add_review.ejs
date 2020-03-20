@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Admin Dashboard</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="../../admin/vendors/iconfonts/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="../../admin/vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="../../admin/vendors/css/vendor.bundle.addons.css">
+  <!-- endinject -->
+  <!-- plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="../../admin/css/style.css">
+  <!-- endinject -->
+</head>
+<body class="horizontal-menu">
+  <div class="container-scroller">
+    <nav class="navbar horizontal-layout-navbar fixed-top navbar-expand-lg">
+      <div class="navbar-menu-wrapper d-flex flex-grow">
+        <ul class="navbar-nav navbar-nav-left collapse navbar-collapse" id="horizontal-top-example">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="/admin"  aria-expanded="false">
+              Dashboard
+            </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="employees-dropdown" data-toggle="dropdown" aria-expanded="false">
+              Blog
+            </a>
+            <div class="dropdown-menu navbar-dropdown" aria-labelledby="employees-dropdown">
+              <a class="dropdown-item" href="/admin/posts">
+                <i class="mdi mdi-monitor-multiple mr-2 text-primary"></i>
+                Posts
+              </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="/admin/addpost">
+                <i class="mdi mdi-scale-balance mr-2 text-primary"></i>
+                Add Post
+              </a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="/admin/visitors" id="actions-dropdown" data-toggle="dropdown" aria-expanded="false">
+              Affiliates & Visitors
+            </a>
+            <div class="dropdown-menu navbar-dropdown" aria-labelledby="actions-dropdown">
+              <a class="dropdown-item" href="#">
+                <i class="mdi mdi-launch mr-2 text-primary"></i>
+                Affiliates
+              </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">
+                <i class="fa fa-user-multiple-outline mr-2 text-primary"></i>
+                Visitors
+              </a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+              Addresses
+            </a>
+            <div class="dropdown-menu navbar-dropdown" aria-labelledby="actions-dropdown">
+              <a class="dropdown-item" href="/admin/addresses">
+                <i class="mdi mdi-launch mr-2 text-primary"></i>
+                Addresses
+              </a>
+              <a class="dropdown-item" href="/admin/addaddress">
+                <i class="mdi mdi-launch mr-2 text-primary"></i>
+                Add Address
+              </a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+              Reviews
+            </a>
+            <div class="dropdown-menu navbar-dropdown" aria-labelledby="actions-dropdown">
+              <a class="dropdown-item" href="/admin/reviews">
+                <i class="mdi mdi-launch mr-2 text-primary"></i>
+                Reviews
+              </a>
+              <a class="dropdown-item" href="/admin/addreview">
+                <i class="mdi mdi-launch mr-2 text-primary"></i>
+                Add Review
+              </a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+              Messages
+            </a>
+            <div class="dropdown-menu navbar-dropdown" aria-labelledby="actions-dropdown">
+              <a class="dropdown-item" href="/admin/messages">
+                <i class="mdi mdi-launch mr-2 text-primary"></i>
+                Messages
+              </a>
+            </div>
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center ml-auto" type="button" data-toggle="collapse" data-target="#horizontal-top-example">
+          <span class="fa fa-bars"></span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="container-fluid page-body-wrapper">
+      <div class="main-panel">
+        <div class="content-wrapper">
+              <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">New Review</h4>
+
+                    <form class="forms-sample" action='/api/addReview' method="POST">
+                      <div class="form-group">
+                        <label for="exampleInputName1">Author</label>
+                        <input type="text" class="form-control" id="author" placeholder="Author" name='author' required>
+                        <input type='hidden' id='api_key' name='api_key' value='<%= api_key %>'>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="exampleTextarea1">Review</label>
+                        <textarea class="form-control" id="review" name='review' rows="5" required></textarea>
+                      </div>
+                      <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                      <button type='reset' class="btn btn-light">Cancel</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <script>
+              if(<%= status %> == true){
+                alert("Post Submited!")
+              }
+              if(<%= status %> == false){
+                alert("ERROR! Post Not Submitted!")
+              }
+              </script>
+        <!-- content-wrapper ends -->
+        <!-- partial:../../partials/_footer.html -->
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © <script>document.write(new Date().getFullYear());</script> . All rights reserved.</span>
+            <span class="text-muted text-center text-sm-right d-block d-sm-inline-block">Server Time: <script>document.write(new Date());</script></span>
+          </div>
+        </footer>
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+
+  <!-- plugins:js -->
+  <script src="../../admin/vendors/js/vendor.bundle.base.js"></script>
+  <script src="../../admin/vendors/js/vendor.bundle.addons.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page-->
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+  <script src="../../admin/js/off-canvas.js"></script>
+  <script src="../../admin/js/hoverable-collapse.js"></script>
+  <script src="../../admin/js/misc.js"></script>
+  <script src="../../admin/js/settings.js"></script>
+  <script src="../../admin/js/todolist.js"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="../../admin/js/dashboard.js"></script>
+  <!--<script src="../../admin/js/file-upload.js"></script> -->
+  <!-- End custom js for this page-->
+</body>
+
+</html>
