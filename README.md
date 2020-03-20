@@ -6,5 +6,6 @@ TODO:
 - Table of visitors ✔️
 - Add addresses
 - Change status of address
+- Delete Address
 - Add reviews
 - Delete reviews
