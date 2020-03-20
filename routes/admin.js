@@ -244,4 +244,52 @@ router.get('/visitors', (req, res) => {
   })
 })
 
+router.get('/addresses', (req, res) => {
+  var sql = 'SELECT * FROM addresses;'
+  var updateStatus = req.query.updateStatus || ''
+  var deleteStatus = req.query.deleteStatus || ''
+  var statusButton = 'notDisable'
+  con.con.query(sql, function(err, result){
+    if(!err){
+      var table = ''
+      for(i=0;i<result.length;i++){
+        if (result[i].status == 'UNUSED'){
+          statusButton = 'disable'
+        }
+        table += `<tr><td>${i+1}</td><td>${result[i].address}</td>
+        <td>${result[i].status}</td>
+
+        <td><form action="/api/changeAddressStatus" method="POST">
+        <input type='hidden' id='key' name='key' value='${api_key_backend}'>
+        <input type='hidden' id='id' name='id' value='${result[i].address}'>
+        <input type="submit" value="Change status" id='${statusButton + (i+1)}' class='btn btn-outline-primary'/></form></td>
+
+        <td><form action="/api/deleteAddress" method="POST">
+        <input type='hidden' id='key' name='key' value='${api_key_backend}'>
+        <input type='hidden' id='id' name='id' value='${result[i].address}'>
+        <input type="submit" value="Delete" class='btn btn-outline-danger'/>
+        </form></td></tr>`
+      }
+      res.render('admin/addresses', {
+        updateStatus: updateStatus,
+        deleteStatus: deleteStatus,
+        table: table
+      })
+    } else {
+      res.send("ERROR")
+      console.log("Error getting addresses! CODE: " + err)
+    }
+  })
+})
+
+router.get('/addaddress', (req, res) => {
+  var status = req.query.status || 'Satoshi'
+  var notBtcAddress = req.query.notBtcAddress || 'Satoshi'
+  res.render('admin/add_address', {
+    status: status,
+    api_key: api_key_backend,
+    notBtcAddress: notBtcAddress
+  })
+})
+
 module.exports = router;
