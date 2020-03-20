@@ -131,7 +131,7 @@ router.get('/dashboard', (req, res) => {
 
 router.get('/addpost', (req, res) => {
   var status = req.query.status
-  res.render('admin/addpost', {
+  res.render('admin/add_post', {
     api_key: api_key_backend,
     status: status
   })
@@ -257,7 +257,7 @@ router.get('/addresses', (req, res) => {
           statusButton = 'disable'
         }
         table += `<tr><td>${i+1}</td><td>${result[i].address}</td>
-        <td>${result[i].status}</td>
+        <td>${result[i].status}</td><td>${((result[i].message).substr(0, 30))+dots_body}</td>
 
         <td><form action="/api/changeAddressStatus" method="POST">
         <input type='hidden' id='key' name='key' value='${api_key_backend}'>
@@ -289,6 +289,45 @@ router.get('/addaddress', (req, res) => {
     status: status,
     api_key: api_key_backend,
     notBtcAddress: notBtcAddress
+  })
+})
+
+router.get('/reviews', (req, res) => {
+  var deleteStatus = req.query.deleteStatus || 'null'
+  var sql = 'SELECT * FROM reviews'
+  con.con.query(sql, function(err, result){
+    var table = ''
+    for(i=0;i<result.length;i++){
+      var dots_author = ''
+      var dots_message = ''
+      if(result[i].author.length > 30){
+        dots_author = '...'
+      }
+      if(result[i].message.length > 30){
+        dots_message = '...'
+      }
+    table += `<tr><td>${i+1}</td><td>${result[i].id}</td>
+    <td>${((result[i].author).substr(0, 30))+dots_author}</td>
+    <td>${((result[i].message).substr(0, 30))+dots_message}</td>
+
+    <td><form action="/api/deleteReview" method="POST">
+    <input type='hidden' id='key' name='key' value='${api_key_backend}'>
+    <input type='hidden' id='id' name='id' value='${result[i].id}'>
+    <input type="submit" value="Delete" class='btn btn-outline-danger'/>
+    </form></td></tr>`
+    }
+    res.render('admin/reviews', {
+      deleteStatus: deleteStatus,
+      table: table
+    })
+  })
+})
+
+router.get('/addreview', (req, res) => {
+  var status = req.query.status
+  res.render('admin/add_review', {
+    status: status,
+    api_key: api_key_backend
   })
 })
 

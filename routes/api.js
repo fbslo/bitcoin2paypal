@@ -325,4 +325,42 @@ router.post('/addAddress', (req, res) => {
   }
 })
 
+router.post('/deleteReview', (req, res) => {
+  var id = req.body.id
+  var api_key_frontend = req.body.api_key
+  if(!address || !api_key_frontend){
+    res.send("Missing info!")
+  }
+  if(api_key_frontend != api_key_backend){
+    res.send("Wrong API key!")
+  }
+  var sql = 'DELETE FROM reviews WHERE id=?'
+  con.con.query(sql, id, function(err, result){
+    if(!err){
+      res.redirect('/admin/reviews?deleteStatus=true')
+    } else {
+      res.redirect('/admin/addaddress?deleteStatus=true')
+      console.log("Error deleting review! CODE: " + err)
+    }
+  })
+})
+
+router.post('/addReview', (req, res) => {
+  var author = req.body.author
+  var review = req.body.review
+  var api_key_frontend = req.body.api_key
+  var id = functions.generateHexString(10)
+  //insert new review
+  var sql = 'INSERT INTO reviews (id, author, message) VALUES ?'
+  var values = [[id, author, review]]
+  con.con.query(sql, [values], function(err, result){
+    if(!err){
+      res.redirect('/admin/addreview?status=true')
+    } else {
+      res.redirect('/admin/addreview?status=false')
+      console.log("Error deleting review! CODE: " + err)
+    }
+  })
+})
+
 module.exports = router;
