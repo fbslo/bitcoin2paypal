@@ -1,6 +1,5 @@
 scripts/config.js
 node_modules/
-BACKUP v1.5/
 BACKUP/
 cmd.exe
 instructions/
@@ -8,6 +7,5 @@ dest/
 mysql.txt
 key.pem
 cert.pem
-BACKUP v.17/
 public/img/blog/
 config/config.json
