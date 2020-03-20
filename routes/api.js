@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
+var WAValidator = require('wallet-address-validator');
 
 
 //Load functions
@@ -223,7 +224,7 @@ router.post('/addAffiliate', (req, res) => {
   var clicks = 0
   var id = req.body.id
   if(key != api_key_backend){
-    res.send("Wrong key!")
+    res.send("Wrong API key!")
   }
   if(!id || !key){
     res.send("Missing info!")
@@ -237,6 +238,91 @@ router.post('/addAffiliate', (req, res) => {
       res.redirect('/admin/affiliate?deletestatus=false')
     }
   })
+})
+
+router.post('/changeAddressStatus', (req, res) => {
+  var address = req.body.id
+  var api_key_frontend = req.body.key
+  if(!address || !api_key_frontend){
+    res.send("Missing info!")
+  }
+  if(api_key_frontend != api_key_backend){
+    res.send("Wrong API key!")
+  }
+  //check current status
+  var sql = 'SELECT * FROM addresses WHERE address=?'
+  con.con.query(sql, address, function(err, result){
+    if(err){
+      console.log("ERROR getting address status from database! CODE: " + err)
+    } else{
+      //check current status
+      if(result[0].status == 'UNUSED'){
+        //cannot change status
+        res.send("Status is UNUSED and it cannot be changed!")
+      } else{
+        //change status to UNUSED
+        var updateSql = 'UPDATE addresses SET status=? WHERE address=?;'
+        var status = [['UNUSED']]
+        con.con.query(updateSql, [status, address], function(err, result){
+          if(!err){
+            res.redirect('/admin/addresses?updateStatus=true')
+          } else{
+            res.redirect('/admin/addresses?updateStatus=false')
+            console.log("Error updating status! CODE: " + err)
+          }
+        })
+      }
+    }
+  })
+})
+
+router.post('/deleteAddress', (req, res) => {
+  var address = req.body.id
+  var api_key_frontend = req.body.key
+  if(!address || !api_key_frontend){
+    res.send("Missing info!")
+  }
+  if(api_key_frontend != api_key_backend){
+    res.send("Wrong API key!")
+  }
+  var sql = 'DELETE FROM addresses WHERE address=?'
+  con.con.query(sql, address, function(err, result){
+    if(err){
+      console.log("ERROR getting address status from database! CODE: " + err)
+      res.redirect('/admin/addresses?deleteStatus=false')
+    } else {
+      res.redirect('/admin/addresses?deleteStatus=true')
+    }
+  })
+})
+
+router.post('/addAddress', (req, res) => {
+  var address = req.body.address
+  var api_key_frontend = req.body.api_key
+  if(!address || !api_key_frontend){
+    res.send("Missing info!")
+  }
+  if(api_key_frontend != api_key_backend){
+    res.send("Wrong API key!")
+  }
+  //check if it's valid address
+  var valid = WAValidator.validate(address, 'BTC'); //check if valid address
+  if(valid){
+    var sql = 'INSERT INTO addresses (address, status) VALUES ?'
+    var values = [[address, 'UNUSED']]
+    con.con.query(sql, [values], function(err, result){
+      if(err){
+        console.log("ERROR adding address into database! CODE: " + err)
+        res.redirect('/admin/addresses?Status=false')
+      } else {
+        res.redirect('/admin/addresses?deleteStatus=true')
+      }
+    })
+  }
+  //not valid address
+  else {
+    res.redirect('/admin/addaddress?notBtcAddress=true')
+  }
 })
 
 module.exports = router;
