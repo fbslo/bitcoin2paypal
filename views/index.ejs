@@ -89,7 +89,7 @@
 				<div class="col-lg-5 col-md-8 offset-lg-0 offset-md-2">
 					<form class="newsletter-form" action='/create' method='POST'>
 						<input type="email" required placeholder="Enter your email" id='email' name='email'><p><br>
-						<input type="number" required placeholder="Enter amount in BTC (e.g. 1.018)" id='amount' name='amount' step="0.00000001">
+						<input type="number" required placeholder="Enter amount in BTC (e.g. 1.018)" id='amount' name='amount' step="0.00000001" min='0.0005'>
 						<input type='hidden' id='ref' name='ref' value='<%= ref %>' >
 						<input type='hidden' id='receive' name='receive' value=''>
 						<button name='button'>Exchange</button>

@@ -73,6 +73,8 @@ app.use('/legal', require('./routes/legal.js'));
 app.use('/api', require('./routes/api.js'));
 //api to process all public requests (for reviews on index.ejs page)
 app.use('/publicapi', require('./routes/publicApi.js'));
+//callback url for payment processor
+app.use('/callback', require('./routes/callback.js'))
 //The 404 Route (ALWAYS Keep this as the last route)
 app.get('*', function(req, res){
   res.status(404).render('errors/404');
