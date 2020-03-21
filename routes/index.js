@@ -36,13 +36,7 @@ router.get('/', (req, res) => {
   con.con.query("SELECT * FROM blog;", function (err, result) {
     if(err){
       console.log('Error geting views!' + err)
-      res.render('index', {
-        rate: rate,
-        views: 'NaN',
-        views_btc: 'NaN',
-        views_yemen: 'NaN',
-		    ref: ref
-      })
+      res.send('errors/500')
     } else {
       //check if affiliate id exisits in the database
       if(result[0] == undefined){
@@ -69,30 +63,56 @@ router.get('/', (req, res) => {
         var third_date = functions.formatDate(result[result.length - 3].date)
         var third_id = result[result.length - 3].id
         var third_image = result[result.length - 3].image
-        //render file
-        res.render('index', {
-          rate: rate,
-		      ref: ref,
-          tx_number: tx_number,
-          last_title: last_title,
-          last_date: last_date,
-          last_author: last_author,
-          last_date: last_date,
-          last_id: last_id,
-          last_views: last_views,
-          last_image: last_image,
-          second_date: second_date,
-          second_title: second_title,
-          second_views: second_views,
-          second_author: second_author,
-          second_id: second_id,
-          second_image: second_image,
-          third_id: third_id,
-          third_title: third_title,
-          third_author: third_author,
-          third_date: third_date,
-          third_views: third_views + 1,
-          third_image: third_image
+
+        //get reviews
+        var authors = '';
+        var reviews = '';
+        var sql_reviews = 'SELECT * FROM reviews LIMIT 10;'
+        con.con.query(sql_reviews, (err1, result1) => {
+          if(err){
+          console.log("Error loading reviews! CODE: "+err1)
+          authors = ''
+          reviews = ''
+          } else {
+            for(i=0;i<result1.length;i++){
+              reviews += `<div class="review-text">
+              							<p>"${result1[i].message}”</p>
+              						</div>`
+              authors += `<div class="author-meta">
+              							<div class="author-name">
+              								<h4>${result1[i].author}</h4>
+              								<p>Customer</p>
+              							</div>
+              						</div>`
+            }
+          }
+          //render file
+          res.render('index', {
+            rate: rate,
+            ref: ref,
+            tx_number: tx_number,
+            last_title: last_title,
+            last_date: last_date,
+            last_author: last_author,
+            last_date: last_date,
+            last_id: last_id,
+            last_views: last_views,
+            last_image: last_image,
+            second_date: second_date,
+            second_title: second_title,
+            second_views: second_views,
+            second_author: second_author,
+            second_id: second_id,
+            second_image: second_image,
+            third_id: third_id,
+            third_title: third_title,
+            third_author: third_author,
+            third_date: third_date,
+            third_views: third_views + 1,
+            third_image: third_image,
+            reviews: reviews,
+            authors: authors
+          })
         })
       }
     }

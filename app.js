@@ -71,6 +71,8 @@ app.use('/blog', require('./routes/blog.js'));
 app.use('/legal', require('./routes/legal.js'));
 //api to process all admin requests (e.g. add addresses, complete tx's, add posts)
 app.use('/api', require('./routes/api.js'));
+//api to process all public requests (for reviews on index.ejs page)
+app.use('/publicapi', require('./routes/publicApi.js'));
 //The 404 Route (ALWAYS Keep this as the last route)
 app.get('*', function(req, res){
   res.status(404).render('errors/404');
