@@ -257,7 +257,7 @@ router.get('/addresses', (req, res) => {
           statusButton = 'disable'
         }
         table += `<tr><td>${i+1}</td><td>${result[i].address}</td>
-        <td>${result[i].status}</td><td>${((result[i].message).substr(0, 30))+dots_body}</td>
+        <td>${result[i].status}</td>
 
         <td><form action="/api/changeAddressStatus" method="POST">
         <input type='hidden' id='key' name='key' value='${api_key_backend}'>
@@ -328,6 +328,32 @@ router.get('/addreview', (req, res) => {
   res.render('admin/add_review', {
     status: status,
     api_key: api_key_backend
+  })
+})
+
+router.get('/messages', (req, res) => {
+  var status = req.query.status
+  var sql = 'SELECT * FROM message;'
+  con.con.query(sql, function(err, result){
+    var table = ''
+    for(i=0;i<result.length;i++){
+      table += `<tr><td>${i+1}</td><td>${result[i].date.split('.')[0]}</td>
+      <td>${result[i].name}</td><td>${result[i].email}</td>
+      <td>${result[i].phone}</td><td>${result[i].ip}</td><td>${result[i].message}</td>
+
+      <td><form action="/api/deleteMessage" method="POST">
+      <input type='hidden' id='key' name='key' value='${api_key_backend}'>
+      <input type='hidden' id='email' name='email' value='${result[i].email}'>
+      <input type='hidden' id='ip' name='ip' value='${result[i].ip}'>
+      <input type='hidden' id='date' name='date' value='${result[i].date}'>
+      <input type="submit" value="Delete" class='btn btn-outline-danger'/>
+      </form></td></tr>`
+    }
+    res.render('admin/messages', {
+      deleteStatus: status,
+      api_key: api_key_backend,
+      table: table
+    })
   })
 })
 
