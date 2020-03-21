@@ -9,10 +9,10 @@ var sanitizer = require('sanitizer');
 var con = require("../scripts/config.js")
 
 router.post('/', (req, res) => {
-  var email = sanitizer.sanitize(req.body.email)
-  var name = sanitizer.sanitize(req.body.first_name + ' ' + req.body.last_name)
-  var phone = sanitizer.sanitize(req.body.phone)
-  var message = sanitizer.sanitize(req.body.message)
+  var email = (sanitizer.sanitize(req.body.email)).substr(0, 21)
+  var name = (sanitizer.sanitize(req.body.first_name + ' ' + req.body.last_name)).substr(0, 31)
+  var phone = (sanitizer.sanitize(req.body.phone)).substr(0, 16)
+  var message = (sanitizer.sanitize(req.body.message)).substr(0, 250)
   var ip_raw = req.ip || req.ips || req.connection.remoteAddress
   var ip = ip_raw.replace('::ffff:', '');
   var date = new Date();

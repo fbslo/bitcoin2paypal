@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -110,41 +111,53 @@
         </button>
       </div>
     </nav>
-
     <div class="container-fluid page-body-wrapper">
       <div class="main-panel">
         <div class="content-wrapper">
-              <div class="col-12 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">New Review</h4>
-
-                    <form class="forms-sample" action='/api/addReview' method="POST">
-                      <div class="form-group">
-                        <label for="exampleInputName1">Author</label>
-                        <input type="text" class="form-control" id="author" placeholder="Author" name='author' required>
-                        <input type='hidden' id='api_key' name='api_key' value='<%= api_key %>'>
-                      </div>
-
-                      <div class="form-group">
-                        <label for="exampleTextarea1">Review</label>
-                        <textarea class="form-control" id="review" name='review' rows="5" required></textarea>
-                      </div>
-                      <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                      <button type='reset' class="btn btn-light">Cancel</button>
-                    </form>
+          <div class="page-header">
+            <h3 class="page-title">
+              Dashboard
+            </h3>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Data table</h4>
+              <div class="row">
+                <div class="col-12">
+                  <div class="table-responsive">
+                    <table id="order-listing" class="table">
+                      <thead>
+                        <tr>
+                            <th>Message #</th>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>IP</th>
+                            <th>Message</th>
+                            <th>Delete</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <%- table %>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+          <p>
 
-              <script>
-              if(<%= status %> == true){
-                alert("Post Submited!")
+            <script>
+              if(<%- deleteStatus %> == true){
+                alert("Message deleted!")
               }
-              if(<%= status %> == false){
-                alert("ERROR! Post Not Submitted!")
+              if(<%- deleteStatus %> == false){
+                alert("Message NOT deleted!")
               }
-              </script>
+            </script>
+
         <!-- content-wrapper ends -->
         <!-- partial:../../partials/_footer.html -->
         <footer class="footer">
@@ -176,7 +189,7 @@
   <!-- endinject -->
   <!-- Custom js for this page-->
   <script src="../../admin/js/dashboard.js"></script>
-  <!--<script src="../../admin/js/file-upload.js"></script> -->
+  <script src="../../admin/js/data-table.js"></script>
   <!-- End custom js for this page-->
 </body>
 

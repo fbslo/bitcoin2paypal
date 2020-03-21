@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Cryptocurrency - Landing Page Template</title>
+	<title>BTC2PP - Bitcoin to PayPal exchange!</title>
 	<meta charset="UTF-8">
-	<meta name="description" content="Cryptocurrency Landing Page Template">
-	<meta name="keywords" content="cryptocurrency, unica, creative, html">
+	<meta name="description" content="Bitcoin to PayPal exchange!">
+  <meta name="keywords" content="bitcoin, paypal, exchange, money, cryptocurrency, crypto">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Favicon -->
 	<link href="img/favicon.ico" rel="shortcut icon"/>
@@ -66,19 +66,19 @@
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
-									<input class="check-form" type="text" placeholder="First Name*:" required name='first_name' id='first_name'>
+									<input class="check-form" type="text" placeholder="First Name*:" required name='first_name' id='first_name' maxlength='15'>
 									<span><i class="ti-check"></i></span>
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<input class="check-form" type="text" placeholder="Last Name*:" required name='last_name' id='last_name'>
+									<input class="check-form" type="text" placeholder="Last Name*:" required name='last_name' id='last_name' maxlength='15'>
 									<span><i class="ti-check"></i></span>
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<input class="check-form" type="email" placeholder="Email Adress*:" required name='email' id='email'>
+									<input class="check-form" type="email" placeholder="Email Adress*:" required name='email' id='email' maxlength='20'>
 									<span><i class="ti-check"></i></span>
 								</div>
 							</div>
@@ -90,7 +90,7 @@
 							</div>
 							<div class="col-md-12">
 								<div class="form-group">
-									<textarea placeholder="Tell us about your question!" required name='message' id='message'></textarea>
+									<textarea placeholder="Tell us about your question!" required name='message' id='message' onkeypress="if (this.value.length > 250) { return false; }"></textarea>
 								</div>
 								<button class="site-btn sb-gradients mt-4">Submit form</button>
 							</div>

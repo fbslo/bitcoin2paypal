@@ -327,8 +327,8 @@ router.post('/addAddress', (req, res) => {
 
 router.post('/deleteReview', (req, res) => {
   var id = req.body.id
-  var api_key_frontend = req.body.api_key
-  if(!address || !api_key_frontend){
+  var api_key_frontend = req.body.key
+  if(!id || !api_key_frontend){
     res.send("Missing info!")
   }
   if(api_key_frontend != api_key_backend){
@@ -359,6 +359,22 @@ router.post('/addReview', (req, res) => {
     } else {
       res.redirect('/admin/addreview?status=false')
       console.log("Error deleting review! CODE: " + err)
+    }
+  })
+})
+
+router.post('/deleteMessage', (req, res) => {
+  var email = req.body.email
+  var ip = req.body.ip
+  var date = req.body.date
+  var api_key_frontend = req.body.api_key
+  var sql = 'DELETE FROM message WHERE email = ? AND date = ? AND ip = ?'
+  con.con.query(sql, [email, date, ip], function(err, result){
+    if(!err){
+      res.redirect('/admin/messages?status=true')
+    } else {
+      res.redirect('/admin/messages?status=false')
+      console.log("Error deleting Message! CODE: " + err)
     }
   })
 })
