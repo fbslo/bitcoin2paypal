@@ -32,40 +32,49 @@ router.get('/', (req, res) => {
   var btc_value = value / 100000000
   var status = 'PAID'
 
-  //save callback to database
-  var values = [[id, btc_value, input_address, configuration, transaction_hash, input_transaction_hash, destination_address]]
-  var callack_sql = 'INSERT INTO callbacks(id , value , input_address , confirmations , transaction_hash , input_transaction_hash , destination_address ) VALUES ?'
-  con.con.query(callback_sql, [values], (err, result) => {
-    if(err){ console.log('Error adding callback! CODE: '+ err)}
-    else{console.log("Callback added")}
-  })
-  //check if secret is correct
-  if(secret_api != secret || destination_address == address){
-    res.status(401)
-  }
-  //secret and address are correct, get details of the transaction and compare amount
-  var sql = 'SELECT * FROM exchange WHERE id=?'
-  con.con.query(sql, id, (err, result) => {
-    if (err) {res.send("error")}
-    var amount = result.amount
-    if((btc_value) == amount){
-      //payment is completed, update status
-      var sql2 = 'UPDATE exchange SET status=? WHERE id=?'
-      con.con.query(sql2, [status, id], (err, result) => {
-        if(err){
-          res.send('*ok*')
-          console.log('Error updating status! CODE: ' + err)
-        } else {
-          res.send('*ok*')
-          console.log('Status updated!')
-        }
-      })
-      res.send('*ok*')
-    } else {
-      //payment not completed, do not update status
-      res.send('*ok*')
+  if(!id || !secret_api || !value || ! input_address || !confirmations || !transaction_hash || !input_transaction_hash || !destination_address){
+    res.render('errors/500')
+  } else {
+    //save callback to database
+    var values = [[id, btc_value, input_address, confirmations, transaction_hash, input_transaction_hash, destination_address]]
+    var callback_sql = 'INSERT INTO callbacks(id , value , input_address , confirmations , transaction_hash , input_transaction_hash , destination_address ) VALUES ?'
+    con.con.query(callback_sql, [values], (err, result) => {
+      if(err){ console.log('Error adding callback! CODE: '+ err)}
+      else{console.log("Callback added")}
+    })
+    //check if secret is correct
+    if(secret_api != secret || destination_address != address){
+      res.status(401)
     }
-  })
+    //secret and address are correct, get details of the transaction and compare amount
+    var sql = 'SELECT * FROM exchange WHERE id=?'
+    con.con.query(sql, id, (err, result) => {
+      if (err) {res.render("errors/500")}
+      if(result.length == 0){
+        res.render('errors/500')
+        console.log('This ID does not exixst (callback). ID: ' +id)
+      } else {
+        var amount = result[0].amount
+        console.log(amount)
+        if((btc_value) >= amount){
+          //payment is completed, update status
+          var sql2 = 'UPDATE exchange SET status=? WHERE id=?'
+          con.con.query(sql2, [status, id], (err, result) => {
+            if(err){
+              res.send('*ok*')
+              console.log('Error updating status! CODE: ' + err)
+            } else {
+              res.send('*ok*')
+              console.log('Status updated!')
+            }
+          })
+        } else {
+          //payment not completed, do not update status
+          res.send('*ok*')
+        }
+      }
+    })
+  }
 });
 
 module.exports = router;
