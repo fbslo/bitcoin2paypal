@@ -1,0 +1,15 @@
+{
+  "password": "password_for_user_admin",
+  "api_key": "super_secret_api_key",
+  "database_ip": "localhost",
+  "database_user": "root",
+  "database_password": "super_secert_db _key",
+  "database_port": "3306",
+  "database": "exchange",
+  "tx_number_front_page": "80",
+  "callback_secret": "secret_for_callback",
+  "deposit_address": "address_to_forward_funds_to",
+  "visit_limit": "200",
+  "environment": "production"
+}
+
