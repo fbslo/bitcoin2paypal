@@ -69,8 +69,8 @@ app.get('*', function(req, res){
 
 // we will pass our 'app' to 'https' server
 https.createServer({
-    key: fs.readFileSync('./key.pem'),
-    cert: fs.readFileSync('./cert.pem')
+    key: fs.readFileSync('./ssl/key.pem'),
+    cert: fs.readFileSync('./ssl/cert.pem')
     //passphrase: 'password'
 }, app)
 .listen(port_https);

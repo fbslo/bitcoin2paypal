@@ -18,9 +18,7 @@ router.get('/', (req, res) => {
   var sum = 0;
   var sql = `SELECT * FROM exchange; SELECT * FROM visitors; SELECT * FROM exchange WHERE status ='PENDING';
   SELECT receive FROM exchange WHERE status ='COMPLETED' OR status='PENDING';
-  SELECT receive FROM exchange WHERE status ='COMPLETED';
-  SELECT address FROM addresses WHERE status ='USED';
-  SELECT address FROM addresses WHERE status ='UNUSED';` //[0] = orders, [1] = visitors, [2] = pending, [3] = revenue, [4] = completed, [5][6] = unused/used addresses,
+  SELECT receive FROM exchange WHERE status ='COMPLETED';` //[0] = orders, [1] = visitors, [2] = pending, [3] = revenue, [4] = completed, [5][6] = unused/used addresses,
   con.con.query(sql, function(err, result){
     var orders = result[0].length
     var visitors = (result[1].length).toLocaleString(undefined, {maximumFractionDigits:2})
@@ -30,13 +28,11 @@ router.get('/', (req, res) => {
     }
     var completed_tx = result[4].length
     var revenue = (sum.toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2})
-    var addresses_used = result[5].length
-    var addresses_unused = result[6].length
     //table statistics
     var table = ''
     for(i=0;i<result[0].length;i++){
       var status_code;
-      if (result[0][i].status == 'PENDING'){
+      if (result[0][i].status == 'PAID'){
         status_code = 'info'
       }
       if (result[0][i].status == 'COMPLETED'){
@@ -66,8 +62,6 @@ router.get('/', (req, res) => {
       clicks: visitors,
       completed_tx: completed_tx,
       revenue: revenue,
-      addresses_used: addresses_used,
-      addresses_unused: addresses_unused,
       pending: pending,
       table: table
     })

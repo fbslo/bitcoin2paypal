@@ -29,51 +29,50 @@ router.get('/', (req, res) => {
           var amount = result[0].amount
           var address = result[0].address
           var email = result[0].email
-		  var receive = result[0].receive
+		      var receive = result[0].receive
+          var status = result[0].status
 
-          request({
-              url: "http://blockchain.info/balance?active="+address,
-              json: true
-          }, function(error, response, body) {
-            if (error){
-              return error
-            }
-            var a = body
-            var b = Object.entries(a);
-            var finalBalance = b[0][1].final_balance //final balance, n_tx, total_received
+          var address_amount = address + '_' + amount
+          QRCode.toDataURL('bitcoin:' + address + '?amount='+amount, { errorCorrectionLevel: 'H' }, function (err, url) {
+            base64Img.img(url, 'dest', address_amount, function(err, filepath) {
+              var qr = filepath.substring(4)
 
-            console.log(finalBalance)
-            var address_amount = address + '_' + amount
-            QRCode.toDataURL('bitcoin:' + address + '?amount='+amount, { errorCorrectionLevel: 'H' }, function (err, url) {
-              base64Img.img(url, 'dest', address_amount, function(err, filepath) {
-                var qr = filepath.substring(4)
-
-                if(amount > finalBalance){
-                  res.render('exchange', {
-                    id: id,
-                    amount: amount,
-                    address: address,
-                    qr: qr,
-                    email: email,
-					receive: receive,
-                    status: 'Waiting for payment...'
-                  })
-                } //if(amount > finalBalance)
-                else {
-                  res.render('paid', {
-                    id: id,
-                    amount: amount,
-                    address: address,
-                    email: email,
-					          receive: receive,
-                    status: 'Processing...'
-                  })
-                }
-              })
+              if(status == 'UNPAID'){
+                res.render('exchange', {
+                  id: id,
+                  amount: amount,
+                  address: address,
+                  qr: qr,
+                  email: email,
+  			          receive: receive,
+                  status: 'Waiting for payment...'
+                })
+              } //if(amount > finalBalance)
+              else if(status == 'PAID') {
+                res.render('paid', {
+                  id: id,
+                  amount: amount,
+                  address: address,
+                  email: email,
+  			          receive: receive,
+                  status: 'Processing Transaction...'
+                })
+              }
+              else if(status == 'COMPLETED') {
+                res.render('paid', {
+                  id: id,
+                  amount: amount,
+                  address: address,
+                  email: email,
+                  receive: receive,
+                  status: 'COMPLETED'
+                })
+              }
+              else {
+                res.render('errors/500')
+              }
             })
           })
-        //  var finalBalance = functions.getBalance(address) //get balance from bitcoin address
-        //  console.log(finalBalance)
         }
       } catch (err){
         if(from == 'search'){
