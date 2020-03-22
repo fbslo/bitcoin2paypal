@@ -89,7 +89,7 @@
 				<div class="col-lg-5 col-md-8 offset-lg-0 offset-md-2">
 					<form class="newsletter-form" action='/create' method='POST'>
 						<input type="email" required placeholder="Enter your email" id='email' name='email'><p><br>
-						<input type="number" required placeholder="Enter amount in BTC (e.g. 1.018)" id='amount' name='amount' step="0.00000001">
+						<input type="number" required placeholder="Enter amount in BTC (e.g. 1.018)" id='amount' name='amount' step="0.00000001" min='0.0005'>
 						<input type='hidden' id='ref' name='ref' value='<%= ref %>' >
 						<input type='hidden' id='receive' name='receive' value=''>
 						<button name='button'>Exchange</button>
@@ -171,7 +171,7 @@
 		<div class="container text-white">
 			<div class="section-title text-center">
 				<h2>Our Features</h2>
-				<p>BTC2PP.net is the simplest way to exchange Bitcoin to PayPal at great exchnage rate.</p>
+				<p>BTC2PP.net is the simplest way to exchange Bitcoin to PayPal at a great exchnage rate.</p>
 			</div>
 			<div class="row">
 				<!-- feature -->
@@ -188,7 +188,7 @@
 					<i class="ti-shield"></i>
 					<div class="feature-content">
 						<h4>Safe & Secure</h4>
-						<p>All your data is encrypted and it's stored for only 30 days after transaction. <br>We do not share any informations with other companies.</p>
+						<p>All your data is encrypted and it's stored for only 30 days after transaction. <br>We do not share any information with other companies.</p>
 					</div>
 				</div>
 				<!-- feature -->
@@ -334,7 +334,7 @@
 						<img src="img/logo.png" class="mb-4" alt="Logo" width="150" height="100">
 						<p>
 						<span>
-	          Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved <br> BTC2PP.NET
+	          Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved <br> BTC2PP.NET <br>Website template is made by <a href='https://colorlib.com'>Colorlib</a>
 	          </span>
 					</div>
 					<div class="col-md-6 col-lg-2 offset-lg-1 footer-widget">
