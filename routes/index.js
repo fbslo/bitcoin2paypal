@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
   //get number of transactions from config.json
   let rawdata = fs.readFileSync('./config/config.json');
   let tx_number_raw = JSON.parse(rawdata);
-  var tx_number = tx_number_raw.tx_number
+  var tx_number = tx_number_raw.tx_number_front_page
   //get affiliate id from url (?ref=affiliate_id)
   var affiliate_id = req.query.ref
   var ref = req.query.ref
