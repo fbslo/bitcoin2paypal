@@ -9,5 +9,6 @@ TODO:
 - Delete Address ✔️
 - Add reviews ✔️
 - Delete reviews ✔️
-- Show reviews on front page
+- Show reviews on front page ✔️
+- Add 3rd party payment processor ✔️
 
