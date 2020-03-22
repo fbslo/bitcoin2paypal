@@ -7,7 +7,14 @@ const RateLimit = require('express-rate-limit');
 var sqlinjection = require('sql-injection');
 var basicAuth = require('express-basic-auth')
 const fileUpload = require('express-fileupload');
+const fs = require('fs');
 
+//Get data from configuration file
+let rawdata = fs.readFileSync('./config/config.json');
+let config_json = JSON.parse(rawdata);
+var password = config_json.password
+var visit_limit = config_json.visit_limit
+var env = config_json.environment
 
 //connect to MySQL
 var con = require("./scripts/config.js")
@@ -18,7 +25,7 @@ const functions = require('./scripts/functions.js')
 //stop smaller DoS attacks b limiting each IP
 const limiter = new RateLimit({
   windowMs: 15*60*1000, // 15 minutes
-  max: 2500, // limit each IP to 100 requests per windowMs
+  max: visit_limit, // limit each IP to 100 requests per windowMs
   delayMs: 0 // disable delaying — full speed until the max limit is  reached
 });
 
@@ -39,9 +46,6 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json()); // for parsing application/json
 // apply to all requests
 app.use(limiter);
-//prevent SLQ injections, but its blocking POST forms from working
-//app.use(sqlinjection);
-
 
 //show contact page
 app.get('/contact', (req, res) => {
@@ -62,7 +66,7 @@ app.use('/test', require('./routes/test.js'));
 app.use('/contact_submit', require('./routes/contact.js'));
 //admin panel
 app.use('/admin', basicAuth({
-          users: { admin: 'supersecret123' },
+          users: { admin: password },
           challenge: true // <--- needed to actually show the login dialog!
       }), require('./routes/admin.js'));
 //blog posts
@@ -73,12 +77,35 @@ app.use('/legal', require('./routes/legal.js'));
 app.use('/api', require('./routes/api.js'));
 //api to process all public requests (for reviews on index.ejs page)
 app.use('/publicapi', require('./routes/publicApi.js'));
+//callback url for payment processor
+app.use('/callback', require('./routes/callback.js'))
 //The 404 Route (ALWAYS Keep this as the last route)
 app.get('*', function(req, res){
   res.status(404).render('errors/404');
 });
 
+if(env.toLowerCase() == 'production'){
+  // Variables for https and http
+  var port_http = 80 //port for http
+  var port_https = 443 //port for https
+  // we will pass our 'app' to 'https' server
+  https.createServer({
+      key: fs.readFileSync('./ssl/key.pem'),
+      cert: fs.readFileSync('./ssl/cert.pem')
+      //passphrase: 'password'
+  }, app)
+  .listen(port_https);
 
-const PORT = process.env.PORT || 5000;
-//start application
-app.listen(PORT, console.log(`Server started on port ${PORT}`));
+  // Redirect from http port 80 to https
+  var http = require('http');
+  http.createServer(function (req, res) {
+      res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+      res.end();
+  }).listen(port_http);
+}
+
+else {
+  const PORT =  5000;
+  //start application
+  app.listen(PORT, console.log(`Server started on port ${PORT}`));
+}

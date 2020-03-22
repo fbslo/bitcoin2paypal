@@ -29,7 +29,7 @@ console.log(element)
     alert("ID copied to clipboard: " + copyText);
   }
 
-  var timeleft = 120;
+  var timeleft = 60;
   var timeleft_ms = timeleft * 1000;
   var timeout = setTimeout("location.reload(true);",timeleft_ms);
 
@@ -53,10 +53,10 @@ console.log(element)
   <body>
     <div class='wrapper fadeInDown'>
       <div id='formContent'>
-        <h2>ID: <%= id %> <a onClick='copy()'><i style="color:white">.</i><i class="fa fa-clipboard" style="color:#cccccc;"></i></a><a onClick="clicker()"><i style="color:white">..</i><i class="fa fa-download" style="color:#cccccc;"></i><i class="fa fa-gift" style="color:#cccccc;"></i></a></h2>
+        <h2>ID: <%= id %> <a onClick='copy()'><i style="color:white">.</i><i class="fa fa-clipboard" style="color:#cccccc;"></i></a><a onClick="clicker()"><i style="color:white">..</i><i class="fa fa-download" style="color:#cccccc;"></i></a></h2>
         <div>PayPal Email: <br><strong><%= email %></strong></div><br>
         <div>Amount: <br><strong><%= amount %></strong><br><strong>(<%= receive %> USD)</strong></div>
-        <div><br>Depost Address:<strong><br><%= address %></strong></div>
+        <div><br>Depost Address:<strong><br><%= address %></strong><br><sup>Please send funds in one transaction!</sup></div>
         <img src="<%= qr %>" alt='Bitcoin QR  code'><br>
         <div><br>Status:<strong><br><%= status %></strong><br><div id='countdown' class='underlineHover'></div></div><br>
       <div id='formFooter'>
