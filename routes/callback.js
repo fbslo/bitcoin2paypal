@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const request = require('request');
+const fs = require('fs');
 
 //get sanitizer
 var sanitizer = require('sanitizer');
@@ -32,10 +33,11 @@ router.get('/', (req, res) => {
   var status = 'PAID'
 
   //save callback to database
+  var values = [[id, btc_value, input_address, configuration, transaction_hash, input_transaction_hash, destination_address]]
   var callack_sql = 'INSERT INTO callbacks(id , value , input_address , confirmations , transaction_hash , input_transaction_hash , destination_address ) VALUES ?'
-  con.con.query(callback_sql, [id, btc_value, input_address, configuration, transaction_hash, input_transaction_hash, destination_address], (err, result) => {
+  con.con.query(callback_sql, [values], (err, result) => {
     if(err){ console.log('Error adding callback! CODE: '+ err)}
-    else(){console.log("Callback added")}
+    else{console.log("Callback added")}
   })
   //check if secret is correct
   if(secret_api != secret || destination_address == address){

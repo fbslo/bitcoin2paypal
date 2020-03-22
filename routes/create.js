@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const request = require('request');
+const fs = require('fs');
 
 //get sanitizer
 var sanitizer = require('sanitizer');
@@ -38,13 +39,18 @@ router.post('/', (req, res) => {
   input_address: '3JBwbFKrJxveLD3ZqGGHBPC8NRrbP9raya',
   callback_url: 'https://btc2pp.net/callback?id=4c5e382a282fbd1' }
   */
-  request('https://blockchainapi.org/api/receive?method=create&address='+address+'&callback='+callback, { json: true }, (err, res, body) => {
-    if (err) {res.redirect('errors/500')}
+  request('https://blockchainapi.org/api/receive?method=create&address='+address+'&callback='+callback, { json: true }, (error, response, body) => {
+    if (error) {
+      res.redirect('errors/500')
+    }
     var input_address = body.input_address
     //save details into database
     var sql = 'INSERT INTO exchange (date, email, amount, address, id, refferal, ip, receive, status) VALUES ?'
-    con.con.query(sql, [date, email, amount, input_address, id, ref, ip, receive, status], (err, result) => {
-      if (err) {res.render('errors/500')}
+	var values = [[date, email, amount, input_address, id, ref, ip, receive, status]]
+    con.con.query(sql, [values], (err, result) => {
+      if (err) {
+  		 res.render('errors/500')
+  	  }
       res.redirect('/exchange?id='+id)
     })
   });
