@@ -28,31 +28,45 @@ Administrator can change status to 'COMPLETED' in the dashboard (/admin).
 Recommended operating system is Ubuntu 16.04 with 512 MB RAM, 1 GB disc, static IP.
 
 **Install NodeJS and NPM:**
+
 `$ sudo apt-get update`
+
 `$ sudo apt-get install nodejs`
+
 `$ sudo apt-get install npm`
 
 Verify that everything is working:
+
 `$ node -v`
+
 `$ npm -v`
+
 You should see the version of NodeJS and NPM.
 
 **Install MySQL database:**
+
 `$ sudo apt-get install mysql-server`
+
 `$ mysql_secure_installation`
 
 (Use secure root password and DON'T FORGET IT!)
 
 Login into MySQL:
+
 `$ sudo mysql -u root -p`
 
 (Optional) Create new mysql user:
+
 `CREATE USER 'mynewuser'@'localhost' IDENTIFIED BY 'goodPassword';`
+
 `GRANT ALL PRIVILEGES ON * . * TO 'mynewuser'@'localhost';`
+
 `FLUSH PRIVILEGES;`
+
 Close mysql (ctrl+d on ubuntu terminal)
 
 Import database file (database.sql):
+
 `$ mysql -u mynewuser -p exchange < database.sql`
 
 **Database setup is over, let's set up our service!**
@@ -61,7 +75,8 @@ Upload files via FTP. When you have files on your server, edit config.json file.
 
 `$ nano bitcoin2paypal/config/config.json`
 
-`{
+```
+{
   "password": "password", //admin's username (to login into /admin, username is admin)
   "api_key": "api_key", //api key, make sure it's secure
   "database_ip": "localhost",
@@ -75,17 +90,22 @@ Upload files via FTP. When you have files on your server, edit config.json file.
   "visit_limit": "200", //maximum number of requests from one IP in 15 minutes (stop small DDoS attacks)
   "environment": "production" //in 'production', you need SSL certificate, port will be 80 and 443, http will redirect to https.  'dev' will use port 5000
 }
-`
+```
+
 Save and close file (ctrl-x).
 
 **Run the app**
+
 `cd bitcoin2paypal`
 
 Test the app.
+
 `$ node app.js`
+
 If everything is working, stop the node app and install PM2, so it will keep running even after you disconnect from the server (if you use VPS).
 
 `$ npm install pm2 -g` (Install PM2 to keep process running in backround)
+
 `$ pm2 app.js start`
 
 ***Your app is now live!***
