@@ -71,7 +71,7 @@ Import database file (database.sql):
 
 **Database setup is over, let's set up our service!**
 
-Upload files via FTP. When you have files on your server, edit config.json file.
+Upload files via FTP. When you have files on your server, edit config.json file (if it's called demo_config.json, rename it)
 
 `$ nano bitcoin2paypal/config/config.json`
 
@@ -127,3 +127,4 @@ TODO:
 - [x] 3rd party payment processor
 - [x] Show messages
 - [ ] IP blacklist
+- [ ] IP Location
