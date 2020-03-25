@@ -16,14 +16,19 @@ var con = mysql.createConnection({
   port: database_port,
   multipleStatements: true
 });
-//connect to MySQL database
-con.connect(function(err) {
-    if (err) {
-        console.error('Error connecting: ' + err.stack);
-        return;
-    }
-    console.log('Connected as ID: ' + con.threadId);
-});
+
+function connect(){
+  //connect to MySQL database
+  con.connect(function(err) {
+      if (err) {
+          console.error('Error connecting: ' + err.stack);
+          connect()
+      }
+      console.log('Connected as ID: ' + con.threadId);
+  });
+}
+
+connect()
 
 //create pool connect to MySQL database
 var pool = mysql.createPool({

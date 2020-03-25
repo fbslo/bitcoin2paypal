@@ -1,5 +1,5 @@
 {
-  "version": "1.2",
+  "version": "1.0",
   "password": "password_for_user_admin",
   "api_key": "super_secret_api_key",
   "database_ip": "localhost",
