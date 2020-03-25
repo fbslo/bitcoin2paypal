@@ -62,7 +62,7 @@
 	<section class="contact-page spad">
 		<div class="container">
 			<div class="row">
-					<form class="contact-form" action='/contact_submit' method='POST'>
+					<form class="contact-form" action='/' method='POST' id='contact'>
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
@@ -157,7 +157,17 @@
 	if(query_status == 'false'){
 		alert('ERROR! Message NOT sent!')
 	}
+	if(query_status == 'spam'){
+		alert('Please do not send links in message!')
+	}
 	</script>
+
+
+	<script>
+        $(document).ready(function(){
+        		$("#contact").attr("action", "/contact_submit");
+        });
+</script>
 
 
 
