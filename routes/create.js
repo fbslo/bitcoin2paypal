@@ -46,7 +46,7 @@ router.post('/', (req, res) => {
     var input_address = body.input_address
     //save details into database
     var sql = 'INSERT INTO exchange (date, email, amount, address, id, refferal, ip, receive, status) VALUES ?'
-	var values = [[date, email, amount, input_address, id, ref, ip, receive, status]]
+	  var values = [[date, email, amount, input_address, id, ref, ip, receive, status]]
     con.con.query(sql, [values], (err, result) => {
       if (err) {
   		 res.render('errors/500')
@@ -54,37 +54,6 @@ router.post('/', (req, res) => {
       res.redirect('/exchange?id='+id)
     })
   });
-
-
-/*
-  //get unused address
-  con.con.query("SELECT address FROM addresses WHERE status = 'UNUSED';", function (err, result) {
-    if(result.length == 0){
-      //no addresses in the database
-	  console.log('NO ADDRESS IN THE DATABASE')
-      res.status(500)
-      res.render('errors/500')
-    }
-    else{
-      var address = result[0].address
-      var status = 'UNPAID'
-
-      var sql = "INSERT INTO exchange (id, email, amount, date, address, refferal, receive, ip, status) VALUES ?";
-      var values = [[id, email, amount, date, address, ref, receive, ip, status]];
-      con.con.query(sql, [values], function (err, result) { //insert data to MySQL database
-        if (err) throw err;
-        console.log("New transaction! Values: " + values)
-        //change address status
-        var change_address_status_sql = "UPDATE addresses SET status = 'USED' WHERE address = ?";
-        var values_change_status = [[address]];
-        con.con.query(change_address_status_sql, values_change_status, function (err, result) { //insert data to MySQL database
-			  console.log('Address status updated')
-        })
-        res.redirect('/exchange?id='+id);
-      })
-    }
-  })
-  */
 });
 
 module.exports = router;

@@ -4,7 +4,6 @@ var bodyParser = require("body-parser");
 const https = require('https');
 var sanitizer = require('sanitize')();
 const RateLimit = require('express-rate-limit');
-var sqlinjection = require('sql-injection');
 var basicAuth = require('express-basic-auth')
 const fileUpload = require('express-fileupload');
 const fs = require('fs');
@@ -22,10 +21,13 @@ var con = require("./scripts/config.js")
 //get functions from file
 const functions = require('./scripts/functions.js')
 
+//get current version
+functions.getLatestVerson()
+
 //stop smaller DoS attacks b limiting each IP
 const limiter = new RateLimit({
   windowMs: 15*60*1000, // 15 minutes
-  max: visit_limit, // limit each IP to 100 requests per windowMs
+  max: visit_limit, // limit each IP to visit_limit requests per windowMs
   delayMs: 0 // disable delaying — full speed until the max limit is  reached
 });
 
@@ -60,8 +62,6 @@ app.use('/', require('./routes/index.js'));
 app.use('/create', require('./routes/create.js'));
 //show details of each exchnage transaction
 app.use('/exchange', require('./routes/exchange.js'));
-///only for testing, remove in production
-app.use('/test', require('./routes/test.js'));
 //contact information
 app.use('/contact_submit', require('./routes/contact.js'));
 //admin panel
@@ -105,7 +105,7 @@ if(env.toLowerCase() == 'production'){
 }
 
 else {
-  const PORT =  5000;
+  const PORT = 5000;
   //start application
   app.listen(PORT, console.log(`Server started on port ${PORT}`));
 }
