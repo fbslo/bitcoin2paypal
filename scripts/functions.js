@@ -12,14 +12,14 @@ let config_json = JSON.parse(rawdata);
 
 module.exports = {
   getLatestVerson: function getLatestVerson(){
-    request('https://json.com/fbslo', { json: true }, (error, response, body) => {
+    request('https://api.jsonbin.io/b/5e78b477f14dd14dd2900a73/latest', { json: true }, (error, response, body) => {
       if(error) {
         console.log('Unable to get latest version! Your version is: ', config_json.version)
       } else {
         if(!body){
           console.log('Unable to get latest version! Your version is: ', config_json.version)
         } else {
-          var latest = body.latest
+          var latest = body.version
           if(config_json.version != latest){
             console.log("Latest version is "+latest+", but you are using "+config_json.version+"! \nPlease update your app!")
           } else {
