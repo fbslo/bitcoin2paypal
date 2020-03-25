@@ -21,6 +21,7 @@ Administrator can change status to 'COMPLETED' in the dashboard (/admin).
 - Visitor logs: All visitors IP addresses are stored in the database.
 - Reviews: Admin can add and delete reviews from the dashboard.
 - Messages: Users can send messages from /contact and admin can see or delete them on the dashboard.
+- Anti-Spam: Spam messages are filtered and removed.
 - Affiliates: Admin can create, delete and keep track of all affiliates. New affiliate ID must be added manually.
 
 ***Installation***
@@ -84,6 +85,7 @@ Upload files via FTP. When you have files on your server, edit config.json file 
   "database_password": "goodPassword", //password for mysql user
   "database_port": "3306",
   "database": "exchange",
+  "rate": "1", //exchange rate, e.g. 1.1 = 10% above market rate, 0.9 = 10% under market rate
   "tx_number_front_page": "80", //This number will be shown on front page, "about" section. "We already have <%= tx_number %>+ transactions!"
   "callback_secret": "secret_for_callback", //secret for payment processor's callbacks
   "deposit_address": "18cCRSfB7w77BfPTdVjTgkc2n2KtNyMvJC", //all funds will be redirected to this bitcoin address
@@ -126,6 +128,7 @@ TODO:
 - [x] Show reviews on front page
 - [x] 3rd party payment processor
 - [x] Show messages
+- [x] Spam filter
 - [ ] IP blacklist
 - [ ] IP Location
 - [ ] Multiple payment options (Skrill, Western Union...)
