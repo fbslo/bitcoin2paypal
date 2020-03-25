@@ -128,3 +128,5 @@ TODO:
 - [x] Show messages
 - [ ] IP blacklist
 - [ ] IP Location
+- [ ] Multiple payment options (Skrill, Western Union...)
+- [ ] 2FA
