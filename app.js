@@ -34,7 +34,7 @@ const limiter = new RateLimit({
 //file upload
 app.use(fileUpload({
     limits: {
-        fileSize: 5000000 //5mb
+        fileSize: 5000000 //5mb limit
     },
     abortOnLimit: true
  }));
@@ -52,7 +52,7 @@ app.use(limiter);
 //show contact page
 app.get('/contact', (req, res) => {
 	res.render('contact', {
-		query: req.query //check if message was sent from query (?status=message_sent)
+		query: req.query
 	})
 });
 
@@ -62,7 +62,7 @@ app.use('/', require('./routes/index.js'));
 app.use('/create', require('./routes/create.js'));
 //show details of each exchnage transaction
 app.use('/exchange', require('./routes/exchange.js'));
-//contact information
+//POST contact information
 app.use('/contact_submit', require('./routes/contact.js'));
 //admin panel
 app.use('/admin', basicAuth({
@@ -73,9 +73,9 @@ app.use('/admin', basicAuth({
 app.use('/blog', require('./routes/blog.js'));
 //terms and conditions & privacy policy
 app.use('/legal', require('./routes/legal.js'));
-//api to process all admin requests (e.g. add addresses, complete tx's, add posts)
+//api to process all admin requests (e.g. complete tx's, add posts)
 app.use('/api', require('./routes/api.js'));
-//api to process all public requests (for reviews on index.ejs page)
+//api to process all public requests 
 app.use('/publicapi', require('./routes/publicApi.js'));
 //callback url for payment processor
 app.use('/callback', require('./routes/callback.js'))

@@ -12,5 +12,6 @@
   "callback_secret": "secret_for_callback",
   "deposit_address": "address_to_forward_funds_to",
   "visit_limit": "200",
+  "public_api": "true",
   "environment": "production"
 }

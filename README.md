@@ -90,6 +90,7 @@ Upload files via FTP. When you have files on your server, edit config.json file 
   "callback_secret": "secret_for_callback", //secret for payment processor's callbacks
   "deposit_address": "18cCRSfB7w77BfPTdVjTgkc2n2KtNyMvJC", //all funds will be redirected to this bitcoin address
   "visit_limit": "200", //maximum number of requests from one IP in 15 minutes (stop small DDoS attacks)
+  "public_api": "true", //disable or enable public API
   "environment": "production" //in 'production', you need SSL certificate, port will be 80 and 443, http will redirect to https.  'dev' will use port 5000
 }
 ```
