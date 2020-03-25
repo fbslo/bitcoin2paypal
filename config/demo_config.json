@@ -6,10 +6,10 @@
   "database_password": "super_secert_db _key",
   "database_port": "3306",
   "database": "exchange",
+  "rate": "1.1",
   "tx_number_front_page": "80",
   "callback_secret": "secret_for_callback",
   "deposit_address": "address_to_forward_funds_to",
   "visit_limit": "200",
   "environment": "production"
 }
-

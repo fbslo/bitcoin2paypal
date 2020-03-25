@@ -4,6 +4,10 @@ const con = require("../scripts/config.js")
 var QRCode = require('qrcode');
 var base64Img = require('base64-img');
 
+//Get data from configuration file
+let rawdata = fs.readFileSync('./config/config.json');
+let config_json = JSON.parse(rawdata);
+
 module.exports = {
   //secret generator function
   generateHexString: function generateHexString(length) {
@@ -12,30 +16,6 @@ module.exports = {
       ret += Math.random().toString(16).substring(2);
     }
     return ret.substring(0,length);
-  },
-  //get balance from Bitcoin address
-  getBalance: function getBalance(address){ //not actualy used anywhere
-    finalBalance = '1';
-    request({
-        url: "http://blockchain.info/balance?active="+address,
-        json: true
-    }, function (error, response, body) {
-      if (error){
-        return error
-      }
-      var a = body
-      var b = Object.entries(a);
-      finalBalance = b[0][1].final_balance //final balance, n_tx, total_received
-      console.log("Real" + finalBalance)
-    })
-    return finalBalance;
-  },
-  getUnusedAddress: function getUnusedAddress(){ //this is not actually used anywhere
-    con.query("SELECT address FROM addresses WHERE status = 'UNUSED';", function (err, result) {
-		var address = result[0].address
-		return address;
-		console.log(address)
-    });
   },
   getQrCode: function getQrCode(address, amount){
     QRCode.toDataURL('bitcoin:' + address + '?amount='+amount, { errorCorrectionLevel: 'H' }, function (err, url) {
@@ -46,7 +26,7 @@ module.exports = {
     })
   },
   getExchangeRate: function getExchangeRate(){
-    var rate = 1.1234
+    var rate = config_json.rate
     return rate;
   },
   saveAffiliateID: function saveAffiliateID(id){
