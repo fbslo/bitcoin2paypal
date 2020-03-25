@@ -16,8 +16,23 @@ router.post('/', (req, res) => {
   var ip_raw = req.ip || req.ips || req.connection.remoteAddress
   var ip = ip_raw.replace('::ffff:', '');
   var date = new Date();
+
+  var spam_list = ['www', 'https', 'http', '.com', '.ru', '.net'] 
+  var spam = 0;
+  for(i=0;i<spam_list.length;i++){
+    if(message.includes(spam_list[i])){
+      spam += 1
+    } else {
+      spam += 0
+    }
+  }
+
+
   if(!email || !name || !message){
     res.redirect('/contact?status=false')
+  }
+  else if(spam != 0){
+    res.redirect('/contact?status=spam')
   }
   else if(!phone){
     let phone = '000000000'
