@@ -4,11 +4,31 @@ const con = require("../scripts/config.js")
 var QRCode = require('qrcode');
 var base64Img = require('base64-img');
 
+var fs = require('fs')
+
 //Get data from configuration file
 let rawdata = fs.readFileSync('./config/config.json');
 let config_json = JSON.parse(rawdata);
 
 module.exports = {
+  getLatestVerson: function getLatestVerson(){
+    request('https://json.com/fbslo', { json: true }, (error, response, body) => {
+      if(error) {
+        console.log('Unable to get latest version! Your version is: ', config_json.version)
+      } else {
+        if(!body){
+          console.log('Unable to get latest version! Your version is: ', config_json.version)
+        } else {
+          var latest = body.latest
+          if(config_json.version != latest){
+            console.log("Latest version is "+latest+", but you are using "+config_json.version+"! \nPlease update your app!")
+          } else {
+            console.log("You have latest version of this app! Your version is: ", config_json.version)
+          }
+        }
+      }
+    });
+  },
   //secret generator function
   generateHexString: function generateHexString(length) {
     var ret = "";
