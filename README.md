@@ -134,3 +134,4 @@ TODO:
 - [ ] IP Location
 - [ ] Multiple payment options (Skrill, Western Union...)
 - [ ] 2FA
+- [ ] Multiple cryptocurrency payment
