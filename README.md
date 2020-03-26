@@ -66,9 +66,9 @@ Login into MySQL:
 
 Close mysql (ctrl+d on ubuntu terminal)
 
-Import database file (database.sql):
+Import database file (exchange.sql):
 
-`$ mysql -u mynewuser -p exchange < database.sql`
+`$ mysql -u mynewuser -p exchange < exchange.sql`
 
 **Database setup is over, let's set up our service!**
 
@@ -113,25 +113,12 @@ If everything is working, stop the node app and install PM2, so it will keep run
 
 ***Your app is now live!***
 
+***Production setup***
+
+To use this app in production mode, you will need SSL keys. Store key.pem and cert.pem into /ssl directory. 
+
+If you run this app on Wndows or Linux, you should run nginx in front as a reverse proxy to app.js running on port e.g. 3000. 
+
+(You could run it as root ( `sudo pm2 app.js start`), but this is BAD for security)
+
 Note: `npm run dev` will start app with nodemon.
-
----
-
-
-TODO:
-- [x] Table of Affiliates
-- [x] Table of visitors
-- [x] Add addresses
-- [x] Change status of address
-- [x] Delete Address
-- [x] Add reviews
-- [x] Delete reviews
-- [x] Show reviews on front page
-- [x] 3rd party payment processor
-- [x] Show messages
-- [x] Spam filter
-- [ ] IP blacklist
-- [ ] IP Location
-- [ ] Multiple payment options (Skrill, Western Union...)
-- [ ] 2FA
-- [ ] Multiple cryptocurrency payment
