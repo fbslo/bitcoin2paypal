@@ -101,6 +101,9 @@ Save and close file (ctrl-x).
 
 `cd bitcoin2paypal`
 
+Install dependencies:
+`npm install`
+
 Test the app.
 
 `$ node app.js`
@@ -109,7 +112,7 @@ If everything is working, stop the node app and install PM2, so it will keep run
 
 `$ npm install pm2 -g` (Install PM2 to keep process running in backround)
 
-`$ pm2 app.js start`
+`$ pm2 start app.js`
 
 ***Your app is now live!***
 
