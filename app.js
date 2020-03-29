@@ -31,6 +31,8 @@ const limiter = new RateLimit({
   delayMs: 0 // disable delaying — full speed until the max limit is  reached
 });
 
+//remove header
+app.disable('x-powered-by');
 //file upload
 app.use(fileUpload({
     limits: {
