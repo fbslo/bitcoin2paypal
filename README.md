@@ -125,3 +125,6 @@ If you run this app on Wndows or Linux, you should run nginx in front as a rever
 (You could run it as root ( `sudo pm2 app.js start`), but this is BAD for security)
 
 Note: `npm run dev` will start app with nodemon.
+
+TODO:
+- [ ] Add anti-spam to "create exchange" form.
