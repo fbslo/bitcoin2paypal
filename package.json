@@ -26,7 +26,7 @@
     "wallet-address-validator": "^0.2.4"
   },
   "devDependencies": {
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.3"
   },
   "scripts": {
     "dev": "nodemon ./app.js"
