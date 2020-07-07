@@ -120,7 +120,7 @@ If everything is working, stop the node app and install PM2, so it will keep run
 
 To use this app in production mode, you will need SSL keys. Store key.pem and cert.pem into /ssl directory. 
 
-If you run this app on Wndows or Linux, you should run nginx in front as a reverse proxy to app.js running on port e.g. 3000. 
+If you run this app on Windows or Linux, you should run nginx in front as a reverse proxy to app.js running on port e.g. 3000. 
 
 (You could run it as root ( `sudo pm2 app.js start`), but this is BAD for security)
 
