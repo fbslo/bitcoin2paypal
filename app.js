@@ -48,7 +48,7 @@ app.use(express.static('images'));
 app.use(express.static('dest'));
 app.set('view engine', 'ejs');
 app.use(bodyParser.json()); // for parsing application/json
-// apply to all requests
+// apply limiter to all requests
 app.use(limiter);
 
 //show contact page
@@ -77,7 +77,7 @@ app.use('/blog', require('./routes/blog.js'));
 app.use('/legal', require('./routes/legal.js'));
 //api to process all admin requests (e.g. complete tx's, add posts)
 app.use('/api', require('./routes/api.js'));
-//api to process all public requests 
+//api to process all public requests
 app.use('/publicapi', require('./routes/publicApi.js'));
 //callback url for payment processor
 app.use('/callback', require('./routes/callback.js'))
