@@ -48,7 +48,7 @@ app.use(express.static('images'));
 app.use(express.static('dest'));
 app.set('view engine', 'ejs');
 app.use(bodyParser.json()); // for parsing application/json
-// apply limiter to all requests
+// apply to all requests
 app.use(limiter);
 
 //show contact page
